@@ -88,7 +88,7 @@ A version has an association to a user object, which tells you who created that
 version. The logged user is an attribute on the object being changed, so you
 can add it in via the controller:
 
-```
+```ruby
 class ArticlesController < ApplicationControler
   before_filter :get_object, only: [:show, :edit, :update, :destroy]
   before_filter :inject_logged_user, only: [:update]
