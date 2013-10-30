@@ -1,7 +1,7 @@
 # Secretary
 
 #### A note about the Gem name
-There is another gem called `[secretary](http://rubygems.org/gems/secretary)`,
+There is another gem called [`secretary`](http://rubygems.org/gems/secretary),
 which hasn't been updated since 2008 and is obsolete. This gem is called
 `secretary-rails` since `secretary` is already taken on RubyGems. However, the
 module name is the same, so using them together would be difficult.
@@ -19,7 +19,7 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 
 ### Why is it better than [other versioning gem]?
 * It tracks associations.
-* It provides diffs (using the `[diffy](http://rubygems.org/gems/diffy)` gem).
+* It provides diffs (using the [`diffy`](http://rubygems.org/gems/diffy) gem).
 * It only stores the changes, not the whole object.
 * It is simple.
 
@@ -78,8 +78,8 @@ class Article < ActiveRecord::Base
 end
 ```
 
-Now, when you save an Article, a new version won't be created for the
-new ArticleAuthor object(s). Instead, an array will be added to the Article's
+Now, when you save an `Article`, a new version won't be created for the
+new `ArticleAuthor` object(s). Instead, an array will be added to the `Article`'s
 changes, which will include the information about the author(s).
 
 
