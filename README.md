@@ -31,8 +31,6 @@ Add to your gemfile:
 gem 'secretary-rails'
 ```
 
-
-## Usage
 Run the setup command, which will create a migration to add the `versions`
 table, and then run it:
 
@@ -41,7 +39,9 @@ bundle exec rake secretary:setup
 bundle exec rake db:migrate
 ```
 
-Then, add the `has_secretary` macro to your model:
+
+## Usage
+Add the `has_secretary` macro to your model:
 
 ```ruby
 class Article < ActiveRecord::Base
