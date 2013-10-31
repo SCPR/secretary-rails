@@ -82,6 +82,8 @@ Now, when you save an `Article`, a new version won't be created for the
 new `ArticleAuthor` object(s). Instead, an array will be added to the `Article`'s
 changes, which will include the information about the author(s).
 
+You can also pass in multiple association names into `tracks_association`.
+
 
 ### Tracking Users
 A version has an association to a user object, which tells you who created that
