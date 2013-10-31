@@ -15,12 +15,36 @@ module Secretary
       #   has_many :bylines,
       #     :as               => :content,
       #     :class_name       => "ContentByline",
-      #     :dependent        => :destroy,
+      #     :dependent        => :destroy
+      #
       #   tracks_association :bylines
       #
-      # Forcing the changes into the custom_changes has allows us
+      # Forcing the changes into the custom_changes allows us
       # to keep track of dirty associations, so that checking stuff
       # like `changed?` will work.
+      # 
+      # If you want to control when an association should be left out of the
+      # version, define an instance method named `should_reject_#{name}?`.
+      # This method takes a hash of the model's attributes (so you can pass
+      # in, for example, form params). This also lets you easily share this
+      # method with `accepts_nested_attributes_for`.
+      #
+      # Example:
+      #
+      #   class Person < ActiveRecord::Base
+      #     has_secretary
+      #     has_many :animals
+      #     tracks_association :animals
+      #
+      #     accepts_nested_attributes_for :animals,
+      #       :reject_if => :should_reject_animals?
+      #
+      #     private
+      #
+      #     def should_reject_animals?(attributes)
+      #       attributes['name'].blank?
+      #     end
+      #   end
       def tracks_association(*associations)
         if !self.has_secretary?
           raise NotVersionedError, self.name
@@ -32,18 +56,21 @@ module Secretary
 
         associations.each do |name|
           module_eval <<-EOE, __FILE__, __LINE__ + 1
-            attr_writer :#{name}_were
             def #{name}_were
               @#{name}_were ||= association_was("#{name}")
             end
 
+            def #{name}_changed?
+              association_changed?("#{name}")
+            end
 
-            private 
+
+            private
+
+            attr_writer :#{name}_were
 
             def build_custom_changes_for_#{name}
-              return if !self.class.has_secretary?
               build_custom_changes_for_association("#{name}")
-              @#{name}_were = nil
             end
 
 
@@ -91,9 +118,15 @@ module Secretary
         persisted? ? self.class.find(self.id).send(name).to_a : []
       end
 
+      def association_changed?(name)
+        self.custom_changes[name]
+      end
+
       def mark_association_as_changed(name, object)
-        return if send("should_reject_#{name}?",
-          object.attributes.stringify_keys)
+        rejector = "should_reject_#{name}?"
+        if object.respond_to?(rejector)
+          return if send(rejector, object.attributes.stringify_keys)
+        end
 
         self.custom_changes[name] = [send("#{name}_were"), send(name)]
       end
