@@ -46,7 +46,7 @@ module Secretary
 
     # The hash that gets serialized into the `object_changes` column.
     def version_hash
-      self.changes.select { |k,_| versioned_attribute?(k) }.stringify_keys
+      self.changes.select { |k,_| versioned_attribute?(k) }.to_hash
     end
 
     def versioned_attribute?(key)
