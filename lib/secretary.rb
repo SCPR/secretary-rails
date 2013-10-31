@@ -10,9 +10,17 @@ module Secretary
   extend ActiveSupport::Autoload
 
   class << self
+    # Pass a block to this method to define the configuration
+    # If no block is passed, config will be defaults
+    def configure
+      config = Config.new
+      yield config if block_given?
+      self.config = config
+    end
+
     attr_writer :config
     def config
-      @config || Secretary::Config.configure
+      @config || configure
     end
 
     def versioned_models
