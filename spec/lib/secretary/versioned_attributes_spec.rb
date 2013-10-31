@@ -7,11 +7,12 @@ describe Secretary::VersionedAttributes do
     end
 
     it 'uses the column names minus the global ignores if nothing is set' do
-      Location.versioned_attributes.should eq ["title", "address"]
+      Location.versioned_attributes.should eq ["title", "address", "people"]
     end
 
     it 'subtracts unversioned attributes if they are set' do
-      Person.versioned_attributes.should eq ["age"]
+      Person.versioned_attributes.should_not include "name"
+      Person.versioned_attributes.should_not include "ethnicity"
     end
   end
 

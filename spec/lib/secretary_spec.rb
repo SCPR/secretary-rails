@@ -30,14 +30,15 @@ describe Secretary do
   describe '::versioned_models' do
     it 'lists the name of all the versioned models' do
       Story # load the class
-      Secretary.versioned_models.should eq ["Story"]
+      Secretary.versioned_models.should include "Story"
 
       class Something < ActiveRecord::Base
         self.table_name = "stories"
         has_secretary
       end
 
-      Secretary.versioned_models.should eq ["Story", "Something"]
+      Secretary.versioned_models.should include "Story"
+      Secretary.versioned_models.should include "Something"
     end
   end
 end
