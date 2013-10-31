@@ -73,7 +73,6 @@ module Secretary
               build_custom_changes_for_association("#{name}")
             end
 
-
             def mark_#{name}_as_changed(object)
               mark_association_as_changed("#{name}", object)
             end
@@ -81,14 +80,10 @@ module Secretary
             def preload_#{name}(object)
               #{name}_were
             end
-
-            def clear_dirty_#{name}
-              clear_dirty_association(name)
-            end
           EOE
 
           before_save :"build_custom_changes_for_#{name}"
-          after_commit :"clear_dirty_#{name}"
+          after_commit :clear_custom_changes
 
           send("before_add_for_#{name}=", Array(:"preload_#{name}"))
           send("before_remove_for_#{name}=", Array(:"preload_#{name}"))
@@ -106,8 +101,9 @@ module Secretary
       def build_custom_changes_for_association(name)
         return if !self.changed?
 
-        original = self.send("#{name}_were").as_json
-        current  = self.send(name).reject(&:marked_for_destruction?).as_json
+        original = self.send("#{name}_were").map(&:version_hash)
+        current  = self.send(name).reject(&:marked_for_destruction?)
+          .map(&:version_hash)
 
         if original != current
           self.custom_changes[name] = [original, current]
@@ -119,7 +115,7 @@ module Secretary
       end
 
       def association_changed?(name)
-        self.custom_changes[name]
+        self.custom_changes[name].present?
       end
 
       def mark_association_as_changed(name, object)
@@ -128,11 +124,14 @@ module Secretary
           return if send(rejector, object.attributes.stringify_keys)
         end
 
-        self.custom_changes[name] = [send("#{name}_were"), send(name)]
+        self.custom_changes[name] = [
+          send("#{name}_were").map(&:version_hash),
+          send(name).map(&:version_hash)
+        ]
       end
 
-      def clear_dirty_association(name)
-        self.send("#{name}_were=", nil)
+      def clear_custom_changes
+        self.custom_changes.clear
       end
     end
   end

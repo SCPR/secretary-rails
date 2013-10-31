@@ -16,16 +16,11 @@ module Secretary
         # you can set `unversioned_attributes` to tell Secretary
         # which attributes to ignore.
         #
-        # Note: Setting `versioned_attributes` will cause
-        # `unversioned_attributes` to be ignored.
-        #
         # Note: These should be set before any `tracks_association`
         # macros are called.
         #
         # Each takes an array of column names *as strings*.
-        attr_writer \
-          :versioned_attributes,
-          :unversioned_attributes
+        attr_writer :versioned_attributes
 
         def versioned_attributes
           @versioned_attributes ||=
@@ -34,6 +29,9 @@ module Secretary
             unversioned_attributes
         end
 
+        def unversioned_attributes=(array)
+          self.versioned_attributes -= array
+        end
 
         private
 

@@ -30,6 +30,29 @@ describe Secretary::TracksAssociation do
     end
 
     it 'clears out the dirty association after commit' do
+      person.animals << animal
+      person.animals_changed?.should eq true
+      person.save!
+      person.animals_changed?.should eq false
+    end
+  end
+
+
+  describe "adding to association collections" do
+    let(:person) { create :person }
+    let(:animal) { create :animal }
+
+    it "creates a new version when adding", focus: true do
+      person.animals << animal
+      person.save!
+
+      person.versions.count.should eq 2
+      version = person.versions.last
+      version.object_changes["animals"][0].should eq []
+      version.object_changes["animals"][1].should eq []
+    end
+
+    it "creates a new version when removing" do
     end
   end
 end
