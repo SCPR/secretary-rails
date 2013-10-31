@@ -20,11 +20,11 @@ module Secretary
       # I didn't want to override the public ActiveRecord
       # API.
       def generate(object)
-        object.versions.create(
+        object.versions.create({
           :user_id          => object.logged_user_id,
           :description      => generate_description(object),
           :object_changes   => object.version_hash
-        )
+        })
       end
 
 
