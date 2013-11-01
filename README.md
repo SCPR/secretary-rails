@@ -163,5 +163,12 @@ you have set. `tracks_association` adds those associations to the
 `versioned_attributes` array.
 
 
-### Contributing
+## TODO
+* Associations are only tracked one-level deep, It would be nice to also
+  track the changes of the association (i.e. recognize when an associated
+  object was changed and show its changed, instead of just showing a whole
+  new object).
+
+
+## Contributing
 Fork it and send a pull request!
