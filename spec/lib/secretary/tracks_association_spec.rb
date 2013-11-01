@@ -40,16 +40,19 @@ describe Secretary::TracksAssociation do
 
   describe "adding to association collections" do
     let(:person) { create :person }
-    let(:animal) { create :animal }
+    let(:animal) { build :animal, name: "Bob", color: "dog" }
 
-    it "creates a new version when adding", focus: true do
-      person.animals << animal
+    it "creates a new version when adding" do
+      person.animals = [animal]
       person.save!
 
       person.versions.count.should eq 2
       version = person.versions.last
       version.object_changes["animals"][0].should eq []
-      version.object_changes["animals"][1].should eq []
+
+      version.object_changes["animals"][1].should eq [
+        {"name" => "Bob", "color" => "dog"}
+      ]
     end
 
     it "creates a new version when removing" do

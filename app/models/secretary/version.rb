@@ -23,7 +23,7 @@ module Secretary
         object.versions.create({
           :user_id          => object.logged_user_id,
           :description      => generate_description(object),
-          :object_changes   => object.version_hash
+          :object_changes   => object.versioned_changes
         })
       end
 
@@ -35,8 +35,7 @@ module Secretary
           "Created #{object.class.name.titleize} ##{object.id}"
 
         elsif was_updated?(object)
-          attributes = object.version_hash.keys
-          attributes.delete_if { |key| !object.versioned_attribute?(key) }
+          attributes = object.versioned_changes.keys
           "Changed #{attributes.to_sentence}"
 
         else

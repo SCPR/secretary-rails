@@ -17,19 +17,31 @@ describe Secretary::VersionedAttributes do
   end
 
 
-  describe '#version_hash' do
+  describe '#versioned_changes' do
     let(:person) { create :person }
 
     it 'is empty for non-dirty objects' do
-      person.version_hash.should eq Hash[]
+      person.versioned_changes.should eq Hash[]
     end
 
     it "return a hash of changes for just the attributes we want" do
       person.age  = 120
       person.name = "Freddie"
 
-      person.version_hash.should eq Hash[{
+      person.versioned_changes.should eq Hash[{
         "age" => [100, 120]
+      }]
+    end
+  end
+
+
+  describe '#versioned_attributes' do
+    let(:animal) { create :animal, name: "Henry", color: "henry" }
+
+    it 'is only the attributes we want' do
+      animal.versioned_attributes.should eq Hash[{
+        "name" => "Henry",
+        "color" => "henry"
       }]
     end
   end

@@ -69,12 +69,12 @@ module Secretary
 
             attr_writer :#{name}_were
 
-            def build_custom_changes_for_#{name}
-              build_custom_changes_for_association("#{name}")
+            def ensure_#{name}_changed
+              ensure_association_changed("#{name}")
             end
 
-            def mark_#{name}_as_changed(object)
-              mark_association_as_changed("#{name}", object)
+            def add_to_changes_for_#{name}(object)
+              add_to_changes_for_association("#{name}", object)
             end
 
             def preload_#{name}(object)
@@ -82,14 +82,47 @@ module Secretary
             end
           EOE
 
-          before_save :"build_custom_changes_for_#{name}"
+          before_save :"ensure_#{name}_changed"
           after_commit :clear_custom_changes
 
-          send("before_add_for_#{name}=", Array(:"preload_#{name}"))
-          send("before_remove_for_#{name}=", Array(:"preload_#{name}"))
-          send("after_add_for_#{name}=", Array(:"mark_#{name}_as_changed"))
-          send("after_remove_for_#{name}=", Array(:"mark_#{name}_as_changed"))
+          add_before_add_methods(name, [
+            :"preload_#{name}"
+          ])
+
+          add_before_remove_methods(name, [
+            :"preload_#{name}"
+          ])
+
+          add_after_add_methods(name, [
+            :"add_to_changes_for_#{name}"
+          ])
+
+          add_after_remove_methods(name, [])
         end
+      end
+
+      private
+
+      def add_before_add_methods(name, new_methods)
+        add_callback_methods("before_add_for_#{name}", new_methods)
+      end
+
+      def add_before_remove_methods(name, new_methods)
+        add_callback_methods("before_remove_for_#{name}", new_methods)
+      end
+
+      def add_after_add_methods(name, new_methods)
+        add_callback_methods("after_add_for_#{name}", new_methods)
+      end
+
+      def add_after_remove_methods(name, new_methods)
+        add_callback_methods("after_remove_for_#{name}", new_methods)
+      end
+
+      def add_callback_methods(method_name, new_methods)
+        original  = send(method_name)
+        methods   = original + new_methods
+        send("#{method_name}=", methods)
       end
     end
 
@@ -97,41 +130,39 @@ module Secretary
     module InstanceMethodsOnActivation
       private
 
-      # Collection is the original collection
-      def build_custom_changes_for_association(name)
-        return if !self.changed?
+      def ensure_association_changed(name)
+        return if self.custom_changes[name].blank?
 
-        original = self.send("#{name}_were").map(&:version_hash)
-        current  = self.send(name).reject(&:marked_for_destruction?)
-          .map(&:version_hash)
-
-        if original != current
-          self.custom_changes[name] = [original, current]
+        if self.custom_changes[name][0] == self.custom_changes[name][1]
+          self.custom_changes[name] = nil
         end
       end
 
       def association_was(name)
-        persisted? ? self.class.find(self.id).send(name).to_a : []
+        self.persisted? ? self.class.find(self.id).send(name).to_a : []
       end
 
       def association_changed?(name)
+        ensure_association_changed(name)
         self.custom_changes[name].present?
       end
 
-      def mark_association_as_changed(name, object)
-        rejector = "should_reject_#{name}?"
-        if object.respond_to?(rejector)
-          return if send(rejector, object.attributes.stringify_keys)
-        end
-
-        self.custom_changes[name] = [
-          send("#{name}_were").map(&:version_hash),
-          send(name).map(&:version_hash)
-        ]
+      # We have to used versioned_attributes here because it's likely
+      # the object will have already been saved by Rails internals.
+      def add_to_changes_for_association(name, object)
+        return if object.marked_for_destruction?
+        ensure_custom_changes(name)
+        self.custom_changes[name][1].push object.versioned_attributes
       end
 
       def clear_custom_changes
         self.custom_changes.clear
+      end
+
+      def ensure_custom_changes(name)
+        self.custom_changes[name] ||= [
+          self.send("#{name}_were").map(&:versioned_attributes), []
+        ]
       end
     end
   end
