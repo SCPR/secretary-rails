@@ -67,8 +67,6 @@ module Secretary
 
             private
 
-            attr_writer :#{name}_were
-
             def ensure_#{name}_changed
               ensure_association_changed("#{name}")
             end
@@ -80,44 +78,38 @@ module Secretary
             def preload_#{name}(object)
               #{name}_were
             end
+
+            def ensure_custom_changes_for_#{name}(object)
+              ensure_custom_changes_for_association("#{name}")
+            end
+
+            def clear_dirty_#{name}
+              @#{name}_were = nil
+            end
           EOE
 
           before_save :"ensure_#{name}_changed"
-          after_commit :clear_custom_changes
+          after_commit :"clear_dirty_#{name}"
 
-          add_before_add_methods(name, [
-            :"preload_#{name}"
+          add_callback_methods("before_add_for_#{name}", [
+            :"preload_#{name}",
+            :"ensure_custom_changes_for_#{name}"
           ])
 
-          add_before_remove_methods(name, [
-            :"preload_#{name}"
+          add_callback_methods("before_remove_for_#{name}", [
+            :"preload_#{name}",
+            :"ensure_custom_changes_for_#{name}"
           ])
 
-          add_after_add_methods(name, [
+          add_callback_methods("after_add_for_#{name}", [
             :"add_to_changes_for_#{name}"
           ])
 
-          add_after_remove_methods(name, [])
+          add_callback_methods("after_remove_for_#{name}", [])
         end
       end
 
       private
-
-      def add_before_add_methods(name, new_methods)
-        add_callback_methods("before_add_for_#{name}", new_methods)
-      end
-
-      def add_before_remove_methods(name, new_methods)
-        add_callback_methods("before_remove_for_#{name}", new_methods)
-      end
-
-      def add_after_add_methods(name, new_methods)
-        add_callback_methods("after_add_for_#{name}", new_methods)
-      end
-
-      def add_after_remove_methods(name, new_methods)
-        add_callback_methods("after_remove_for_#{name}", new_methods)
-      end
 
       def add_callback_methods(method_name, new_methods)
         original  = send(method_name)
@@ -133,8 +125,15 @@ module Secretary
       def ensure_association_changed(name)
         return if self.custom_changes[name].blank?
 
+        # If the two sides of the changes are the same, then we should
+        # just remove this key from the custom_changes hash, otherwise
+        # `#changes` will think that changes have been made.
+        #
+        # This might happen if we are adding and removing stuff without
+        # saving, then when we go to save, it turns out that nothing
+        # actually changed. Or something like that.
         if self.custom_changes[name][0] == self.custom_changes[name][1]
-          self.custom_changes[name] = nil
+          self.custom_changes.delete(name)
         end
       end
 
@@ -151,15 +150,10 @@ module Secretary
       # the object will have already been saved by Rails internals.
       def add_to_changes_for_association(name, object)
         return if object.marked_for_destruction?
-        ensure_custom_changes(name)
         self.custom_changes[name][1].push object.versioned_attributes
       end
 
-      def clear_custom_changes
-        self.custom_changes.clear
-      end
-
-      def ensure_custom_changes(name)
+      def ensure_custom_changes_for_association(name)
         self.custom_changes[name] ||= [
           self.send("#{name}_were").map(&:versioned_attributes), []
         ]

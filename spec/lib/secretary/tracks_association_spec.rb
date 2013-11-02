@@ -55,7 +55,93 @@ describe Secretary::TracksAssociation do
       ]
     end
 
-    it "creates a new version when removing" do
+    it 'makes a version when adding' do
+      person  = create :person
+      animal  = build :animal, name: "Bryan", color: 'lame'
+
+      person.animals << animal
+      person.save!
+      person.versions.count.should eq 2
+
+      versions = person.versions.order('version_number').to_a
+      versions.last.object_changes["animals"][0].should eq []
+      versions.last.object_changes["animals"][1].should eq [{
+        "name" => "Bryan",
+        "color" => "lame"
+      }]
+    end
+
+    it 'makes a version when removing' do
+      person  = build :person
+      animal  = build :animal, name: "Bryan", color: 'lame'
+      person.animals = [animal]
+      person.save!
+      person.versions.count.should eq 1
+
+      person.animals = []
+      person.save!
+      person.versions.count.should eq 2
+
+      versions = person.versions.order('version_number').to_a
+      versions.last.object_changes["animals"][0].should eq [{
+        "name" => "Bryan",
+        "color" => "lame"
+      }]
+      versions.last.object_changes["animals"][1].should eq []
+    end
+  end
+
+
+  describe 'with accepts_nested_attributes_for' do
+    let(:animal) { create :animal, name: "Henry", color: "blind" }
+    let(:person) { create :person }
+
+    it 'adds a new version when adding to collection' do
+      animals_attributes = [
+        {
+          "name" => "George",
+          "color" => "yes"
+        }
+      ]
+
+      person.animals_attributes = animals_attributes
+      person.save!
+      person.versions.count.should eq 2
+
+      version = person.versions.order('version_number').last
+      version.object_changes["animals"][0].should eq []
+      version.object_changes["animals"][1].should eq [{
+        "name" => "George",
+        "color" => "yes"
+      }]
+    end
+
+    it 'adds a new version when changing something in collection', focus: true do
+      animals_attributes = [
+        {
+          "id" => animal.id,
+          "name" => "Lemon"
+        }
+      ]
+
+      person.animals << animal
+      person.versions.count.should eq 2
+      person.save!
+      person.animals_attributes = animals_attributes
+      person.versions.count.should eq 3
+
+      version = person.versions.order('version_number').last
+      version.object_changes["animals"][0].should eq [{
+        "name" => "Henry",
+        "color" => "blind"
+      }]
+      version.object_changes["animals"][1].should eq [{
+        "name" => "Lemon",
+        "color" => "blind"
+      }]
+    end
+
+    it 'does not add a new version if nothing has changed' do
     end
   end
 end
