@@ -172,3 +172,9 @@ you have set. `tracks_association` adds those associations to the
 
 ## Contributing
 Fork it and send a pull request!
+
+
+### Running Tests
+This library uses [appraisal](https://github.com/thoughtbot/appraisal) to test
+against different Rails versions. To run the test suite on all versions, use
+`appraisal rspec`.

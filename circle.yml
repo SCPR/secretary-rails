@@ -1,3 +1,7 @@
+test:
+  override:
+    - bundle exec appraisal rspec spec
+
 database:
   override:
     - echo "skipping database setup"
