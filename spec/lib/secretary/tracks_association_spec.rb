@@ -125,9 +125,9 @@ describe Secretary::TracksAssociation do
       ]
 
       person.animals << animal
-      person.versions.count.should eq 2
       person.save!
-      person.animals_attributes = animals_attributes
+      person.versions.count.should eq 2
+      person.animals_attributes = animals_attributes # this doesn't call before_add/remove callbacks
       person.versions.count.should eq 3
 
       version = person.versions.order('version_number').last
