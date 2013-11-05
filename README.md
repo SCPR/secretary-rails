@@ -193,14 +193,11 @@ you have set. `tracks_association` adds those associations to the
 Fork it and send a pull request!
 
 ### TODO
-* Rails 4.1+ support.
-* Implement the full ActiveMode::Dirty API into association tracking.
-* Test (officially) with MySQL and SQLite.
+* See [Issues](https://github.com/SCPR/secretary-rails/issues).
 * Associations are only tracked one-level deep, It would be nice to also
   track the changes of the association (i.e. recognize when an associated
   object was changed and show its changed, instead of just showing a whole
   new object).
-* Support for Rails 3.0 and 3.1.
 
 ### Running Tests
 This library uses [appraisal](https://github.com/thoughtbot/appraisal) to test
