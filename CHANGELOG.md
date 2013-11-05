@@ -1,4 +1,4 @@
-## 1.0.0.beta1
+## 1.0.0.beta1 (2013-11-05)
 * Beta for stable 1.0 release.
 
 ## 0.0.1
