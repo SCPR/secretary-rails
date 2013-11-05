@@ -5,4 +5,4 @@ test:
 
 database:
   override:
-    - echo "skipping database setup"
+    - mv -f spec/internal/config/database.yml.ci spec/internal/config/database.yml
