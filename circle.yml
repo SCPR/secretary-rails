@@ -1,7 +1,7 @@
 test:
   override:
     - bundle exec appraisal
-    - bundle exec appraisal rspec spec
+    - bundle exec appraisal rake test
 
 database:
   override:
