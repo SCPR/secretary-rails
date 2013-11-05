@@ -13,9 +13,9 @@ module Secretary
       #   has_secretary
       #
       #   has_many :bylines,
-      #     :as               => :content,
-      #     :class_name       => "ContentByline",
-      #     :dependent        => :destroy
+      #     :as           => :content,
+      #     :class_name   => "ContentByline",
+      #     :dependent    => :destroy
       #
       #   tracks_association :bylines
       #
