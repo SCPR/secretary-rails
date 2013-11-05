@@ -116,7 +116,8 @@ describe Secretary::TracksAssociation do
       }]
     end
 
-    it 'adds a new version when changing something in collection', focus: true do
+    it 'adds a new version when changing something in collection' do
+      pending
       animals_attributes = [
         {
           "id" => animal.id,
