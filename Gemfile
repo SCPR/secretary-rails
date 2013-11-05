@@ -1,11 +1,11 @@
 source "https://rubygems.org"
 gemspec
 
+gem 'appraisal', github: 'bricker/appraisal'
 gem "combustion", github: "pat/combustion"
+gem 'generator_spec', github: "bricker/generator_spec"
 
 group :test do
-  gem 'activerecord'
   gem 'test_after_commit'
-  gem 'shoulda-matchers'
   gem 'pry-debugger'
 end

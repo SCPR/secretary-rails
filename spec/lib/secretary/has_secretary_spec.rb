@@ -40,8 +40,7 @@ describe Secretary::HasSecretary do
     end
 
     it "adds the has_many association for versions" do
-      new_story.should have_many(:versions)
-        .dependent(:destroy).class_name("Secretary::Version")
+      new_story.versions.to_a.should eq Array.new
     end
 
     it "has logged_user_id" do

@@ -1,4 +1,21 @@
 GIT
+  remote: git://github.com/bricker/appraisal.git
+  revision: ba106522c5d24b4d037f7c99b1ba0e1897ae6e7b
+  specs:
+    appraisal (1.0.0.beta1)
+      bundler
+      rake
+      thor (>= 0.14.0)
+
+GIT
+  remote: git://github.com/bricker/generator_spec.git
+  revision: 22c29cbbc1b1cbbc34e636b825e2b997e04a0f02
+  specs:
+    generator_spec (0.9.0)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
+
+GIT
   remote: git://github.com/pat/combustion.git
   revision: 91c040e7df0110f563e4dc8a7343c33b856532be
   specs:
@@ -10,16 +27,14 @@ GIT
 PATH
   remote: ..
   specs:
-    secretary-rails (0.0.1)
+    secretary-rails (1.0.0.beta1)
+      activerecord (>= 3.2.0)
       diffy (~> 3.0.1)
-      rails (>= 3.2.0)
+      railties (>= 3.2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (3.2.15)
-      actionpack (= 3.2.15)
-      mail (~> 2.5.4)
     actionpack (3.2.15)
       activemodel (= 3.2.15)
       activesupport (= 3.2.15)
@@ -38,16 +53,9 @@ GEM
       activesupport (= 3.2.15)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activeresource (3.2.15)
-      activemodel (= 3.2.15)
-      activesupport (= 3.2.15)
     activesupport (3.2.15)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    appraisal (1.0.0.beta1)
-      bundler
-      rake
-      thor (~> 0.18.1)
     arel (3.0.2)
     builder (3.0.4)
     coderay (1.0.9)
@@ -63,20 +71,12 @@ GEM
     erubis (2.7.0)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
-    generator_spec (0.9.0)
-      activerecord (>= 3.0, <= 4.0)
-      railties (>= 3.0, <= 4.0)
     hike (1.2.3)
     i18n (0.6.5)
     journey (1.0.4)
     json (1.8.1)
-    mail (2.5.4)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
     method_source (0.8.2)
-    mime-types (1.25)
     multi_json (1.8.2)
-    polyglot (0.3.3)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -91,14 +91,6 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails (3.2.15)
-      actionmailer (= 3.2.15)
-      actionpack (= 3.2.15)
-      activerecord (= 3.2.15)
-      activeresource (= 3.2.15)
-      activesupport (= 3.2.15)
-      bundler (~> 1.0)
-      railties (= 3.2.15)
     railties (3.2.15)
       actionpack (= 3.2.15)
       activesupport (= 3.2.15)
@@ -120,8 +112,6 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    shoulda-matchers (2.4.0)
-      activesupport (>= 3.0.0)
     slop (3.4.6)
     sprockets (2.2.2)
       hike (~> 1.2)
@@ -132,24 +122,20 @@ GEM
     test_after_commit (0.2.2)
     thor (0.18.1)
     tilt (1.4.1)
-    treetop (1.4.15)
-      polyglot
-      polyglot (>= 0.3.1)
     tzinfo (0.3.38)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
-  appraisal (>= 1.0.0.beta)
+  activerecord (~> 3.2.0)
+  appraisal!
   combustion!
   factory_girl
-  generator_spec
+  generator_spec!
   pry-debugger
-  rails (~> 3.2.15)
+  railties (~> 3.2.0)
   rspec-rails
   secretary-rails!
-  shoulda-matchers
   sqlite3
   test_after_commit

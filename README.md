@@ -8,20 +8,29 @@ module name is the same, so using them together would be difficult.
 
 
 ### What is it?
-Light-weight model versioning for ActiveRecord. Works with Rails 3 and 4.
-
+Light-weight model versioning for ActiveRecord 3.2+.
 
 ### How does it work?
 Whenever you save your model, a new version is saved. The changes are
 serialized and stored in the database, along with a version description,
 foreign keys to the object, and a foreign key to the user who saved the object.
 
-
 ### Why is it better than [other versioning gem]?
 * It tracks associations.
 * It provides diffs (using the [`diffy`](http://rubygems.org/gems/diffy) gem).
 * It only stores the changes, not the whole object.
 * It is simple.
+
+### Compatibility
+* Rails 3.2+
+* SQLite
+* MySQL? (untested)
+* Postgres? (untested)
+
+### Dependencies
+* [`activerecord`](http://rubygems.org/gems/activerecord) >= 3.2.0
+* [`railties`](http://rubygems.org/gems/railties) >= 3.2.0
+* [`diffy`](http://rubygems.org/gems/diffy) ~> 3.0.1
 
 
 ## Installation
@@ -31,11 +40,11 @@ Add to your gemfile:
 gem 'secretary-rails'
 ```
 
-Run the setup command, which will create a migration to add the `versions`
+Run the install command, which will create a migration to add the `versions`
 table, and then run it:
 
 ```
-bundle exec rake secretary:setup
+bundle exec rails generate secretary:install
 bundle exec rake db:migrate
 ```
 
@@ -50,7 +59,6 @@ end
 ```
 
 Congratulations, now your records are being versioned.
-
 
 ### Tracking associations
 This gem is built with the end-user in mind, so it doesn't track hidden
@@ -84,7 +92,6 @@ changes, which will include the information about the author(s).
 
 You can also pass in multiple association names into `tracks_association`.
 
-
 ### Tracking Users
 A version has an association to a user object, which tells you who created that
 version. The logged user is an attribute on the object being changed, so you
@@ -115,7 +122,6 @@ class ArticlesController < ApplicationControler
 end
 ```
 
-
 ### Configuration
 In an initializer (may we suggest `secretary.rb`?), add:
 
@@ -130,7 +136,6 @@ end
 * **user_class** - The class for your user model.
 * **ignored_attributes** - The attributes which should always be ignored
   when generating a version, for every model, as an array of Strings.
-
 
 ### Specifying which attributes to keep track of
 Sometimes you have an attribute on your model that either isn't public
@@ -163,16 +168,17 @@ you have set. `tracks_association` adds those associations to the
 `versioned_attributes` array.
 
 
-## TODO
+## Contributing
+Fork it and send a pull request!
+
+### TODO
+* Rails 4.1+ support.
+* Test (officially) with MySQL and SQLite.
 * Associations are only tracked one-level deep, It would be nice to also
   track the changes of the association (i.e. recognize when an associated
   object was changed and show its changed, instead of just showing a whole
   new object).
-
-
-## Contributing
-Fork it and send a pull request!
-
+* Support for Rails 3.0 and 3.1.
 
 ### Running Tests
 This library uses [appraisal](https://github.com/thoughtbot/appraisal) to test

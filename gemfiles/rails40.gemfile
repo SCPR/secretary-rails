@@ -2,13 +2,14 @@
 
 source "https://rubygems.org"
 
+gem "appraisal", :github=>"bricker/appraisal"
 gem "combustion", :github=>"pat/combustion"
-gem "rails", "~> 3.2.15"
+gem "generator_spec", :github=>"bricker/generator_spec"
+gem "activerecord", "~> 4.0.0"
+gem "railties", "~> 4.0.0"
 
 group :test do
-  gem "activerecord"
   gem "test_after_commit"
-  gem "shoulda-matchers"
   gem "pry-debugger"
 end
 
