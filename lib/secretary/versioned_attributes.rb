@@ -48,7 +48,7 @@ module Secretary
     end
 
     def versioned_attributes
-      self.as_json.select { |k,_| versioned_attribute?(k) }.to_hash
+      self.as_json(root: false).select { |k,_| versioned_attribute?(k) }.to_hash
     end
 
     def versioned_attribute?(key)
