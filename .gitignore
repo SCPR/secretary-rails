@@ -4,3 +4,4 @@ pkg/
 spec/internal/db/*.sqlite
 spec/internal/log/*.log
 tmp/
+Gemfile.lock
