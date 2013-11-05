@@ -25,7 +25,7 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 * Rails 3.2+
 * SQLite
 * MySQL? (untested)
-* Postgres? (untested)
+* PostgreSQL? (untested)
 
 ### Dependencies
 * [`activerecord`](http://rubygems.org/gems/activerecord) >= 3.2.0
@@ -41,7 +41,7 @@ gem 'secretary-rails'
 ```
 
 Run the install command, which will create a migration to add the `versions`
-table, and then run it:
+table, and then run the migration:
 
 ```
 bundle exec rails generate secretary:install
@@ -91,6 +91,27 @@ new `ArticleAuthor` object(s). Instead, an array will be added to the `Article`'
 changes, which will include the information about the author(s).
 
 You can also pass in multiple association names into `tracks_association`.
+
+### Dirty Associations
+Secretary provides Rails-style `dirty attributes` for associations.
+Given an association `has_many :pets`, the methods available are:
+
+* **pets_changed?**
+* **pets_were**
+
+Secretary also merges in the association changes into the standard Rails
+`changes` hash:
+
+```ruby
+person.pets.to_a # => []
+
+person.pets << Pet.new(name: "Spot")
+
+person.pets_changed? # => true
+person.changed?      # => true
+person.pets_were     # => []
+person.changes       # => { "pets" => [[], [{ "name" => "Spot" }]]}
+```
 
 ### Tracking Users
 A version has an association to a user object, which tells you who created that
@@ -173,6 +194,7 @@ Fork it and send a pull request!
 
 ### TODO
 * Rails 4.1+ support.
+* Implement the full ActiveMode::Dirty API into association tracking.
 * Test (officially) with MySQL and SQLite.
 * Associations are only tracked one-level deep, It would be nice to also
   track the changes of the association (i.e. recognize when an associated
