@@ -1,6 +1,6 @@
 test:
   override:
-    - gem install bundler
+    - bundle exec appraisal
     - bundle exec appraisal rspec spec
 
 database:
