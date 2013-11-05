@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "combustion"
   s.add_development_dependency "factory_girl"
   s.add_development_dependency "appraisal", '>= 1.0.0.beta1'
+  s.add_development_dependency 'generator_spec'
 end

@@ -1,12 +1,17 @@
-require 'rails/generators/active_record/migration'
+require 'rails/generators'
 
 module Secretary
   class InstallGenerator < Rails::Generators::Base
+    include Rails::Generators::Migration
+
     if ActiveRecord::VERSION::MAJOR < 4
-      include Rails::Generators::Migration
+      require 'rails/generators/active_record/migration'
       extend ActiveRecord::Generators::Migration
     else
-      include ActiveRecord::Generators::Migration
+      require 'rails/generators/active_record'
+      def self.next_migration_number(*args)
+        ActiveRecord::Generators::Base.next_migration_number(*args)
+      end
     end
 
     source_root File.expand_path("../templates", __FILE__)
