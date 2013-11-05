@@ -117,7 +117,6 @@ describe Secretary::TracksAssociation do
     end
 
     it 'adds a new version when changing something in collection' do
-      pending
       animals_attributes = [
         {
           "id" => animal.id,
@@ -128,7 +127,8 @@ describe Secretary::TracksAssociation do
       person.animals << animal
       person.save!
       person.versions.count.should eq 2
-      person.animals_attributes = animals_attributes # this doesn't call before_add/remove callbacks
+      person.animals_attributes = animals_attributes
+      person.save!
       person.versions.count.should eq 3
 
       version = person.versions.order('version_number').last
@@ -142,7 +142,73 @@ describe Secretary::TracksAssociation do
       }]
     end
 
+    it 'adds a new version when removing something from collection' do
+      animals_attributes = [
+        {
+          "id" => animal.id,
+          "_destroy" => "1"
+        }
+      ]
+
+      person.animals << animal
+      person.save!
+      person.versions.count.should eq 2
+      person.animals_attributes = animals_attributes
+      person.save!
+      person.versions.count.should eq 3
+
+      version = person.versions.order('version_number').last
+      version.object_changes["animals"][0].should eq [{
+        "name" => "Henry",
+        "color" => "blind"
+      }]
+      version.object_changes["animals"][1].should eq []
+    end
+
     it 'does not add a new version if nothing has changed' do
+      animals_attributes = [
+        {
+          "id" => animal.id,
+          "name" => "Henry"
+        }
+      ]
+
+      person.animals << animal
+      person.save!
+      person.versions.count.should eq 2
+       # this doesn't call before_add/remove callbacks
+      person.animals_attributes = animals_attributes
+      person.save!
+      person.versions.count.should eq 2
+    end
+  end
+
+
+  describe '#association_changed?' do
+    let(:person) { create :person }
+    let(:animal) { create :animal }
+
+    it 'is true if the association has changed' do
+      person.animals_changed?.should eq false
+      person.animals << animal
+      person.animals_changed?.should eq true
+    end
+
+    it 'is false after the parent object has been saved' do
+      person.animals << animal
+      person.animals_changed?.should eq true
+      person.save!
+      person.animals_changed?.should eq false
+    end
+
+    it 'is false if the association has not changed' do
+      person.animals << animal
+      person.animals_changed?.should eq true
+      person.save!
+      person.animals_changed?.should eq false
+
+      person.animals = [animal]
+      person.animals_changed?.should eq false
     end
   end
 end

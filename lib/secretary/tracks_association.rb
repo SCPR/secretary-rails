@@ -67,20 +67,12 @@ module Secretary
 
             private
 
-            def ensure_#{name}_changed
-              ensure_association_changed("#{name}")
-            end
-
-            def add_to_changes_for_#{name}(object)
-              add_to_changes_for_association("#{name}", object)
-            end
-
-            def preload_#{name}(object)
+            def preload_#{name}_were(object)
               #{name}_were
             end
 
-            def ensure_custom_changes_for_#{name}(object)
-              ensure_custom_changes_for_association("#{name}")
+            def check_for_#{name}_changes
+              check_for_association_changes("#{name}")
             end
 
             def clear_dirty_#{name}
@@ -88,23 +80,18 @@ module Secretary
             end
           EOE
 
-          before_save :"ensure_#{name}_changed"
+          before_save :"check_for_#{name}_changes"
           after_commit :"clear_dirty_#{name}"
 
           add_callback_methods("before_add_for_#{name}", [
-            :"preload_#{name}",
-            :"ensure_custom_changes_for_#{name}"
+            :"preload_#{name}_were"
           ])
 
           add_callback_methods("before_remove_for_#{name}", [
-            :"preload_#{name}",
-            :"ensure_custom_changes_for_#{name}"
+            :"preload_#{name}_were"
           ])
 
-          add_callback_methods("after_add_for_#{name}", [
-            :"add_to_changes_for_#{name}"
-          ])
-
+          add_callback_methods("after_add_for_#{name}", [])
           add_callback_methods("after_remove_for_#{name}", [])
         end
       end
@@ -122,18 +109,20 @@ module Secretary
     module InstanceMethodsOnActivation
       private
 
-      def ensure_association_changed(name)
-        return if self.custom_changes[name].blank?
+      # This has to be run in a before_save callback,
+      # because we can't rely on the after_add, etc. callbacks
+      # to fill in our custom changes. For example, setting
+      # `self.animals_attributes=` doesn't run these callbacks.
+      def check_for_association_changes(name)
+        persisted   = self.send("#{name}_were")
+        current     = self.send(name).to_a.reject(&:marked_for_destruction?)
 
-        # If the two sides of the changes are the same, then we should
-        # just remove this key from the custom_changes hash, otherwise
-        # `#changes` will think that changes have been made.
-        #
-        # This might happen if we are adding and removing stuff without
-        # saving, then when we go to save, it turns out that nothing
-        # actually changed. Or something like that.
-        if self.custom_changes[name][0] == self.custom_changes[name][1]
-          self.custom_changes.delete(name)
+        persisted_attributes  = persisted.map(&:versioned_attributes)
+        current_attributes    = current.map(&:versioned_attributes)
+
+        if persisted_attributes != current_attributes
+          ensure_custom_changes_for_association(name, persisted)
+          self.custom_changes[name][1] = current_attributes
         end
       end
 
@@ -142,20 +131,14 @@ module Secretary
       end
 
       def association_changed?(name)
-        ensure_association_changed(name)
+        check_for_association_changes(name)
         self.custom_changes[name].present?
       end
 
-      # We have to used versioned_attributes here because it's likely
-      # the object will have already been saved by Rails internals.
-      def add_to_changes_for_association(name, object)
-        return if object.marked_for_destruction?
-        self.custom_changes[name][1].push object.versioned_attributes
-      end
-
-      def ensure_custom_changes_for_association(name)
+      def ensure_custom_changes_for_association(name, persisted=nil)
         self.custom_changes[name] ||= [
-          self.send("#{name}_were").map(&:versioned_attributes), []
+          (persisted || self.send("#{name}_were")).map(&:versioned_attributes),
+          Array.new
         ]
       end
     end
