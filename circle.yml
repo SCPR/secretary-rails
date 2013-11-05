@@ -1,5 +1,6 @@
 test:
   override:
+    - GEM_HOME=.bundle/ruby/2.0.0 gem install bundler --pre
     - bundle exec appraisal
     - bundle exec appraisal rake test
 
