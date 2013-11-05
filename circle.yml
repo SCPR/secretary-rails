@@ -1,8 +1,8 @@
 test:
   override:
-    - bundle exec appraisal
-    - bundle exec appraisal rake test
+    - bundle exec rake appraisal:install
+    - bundle exec rake appraisal test
 
 database:
   override:
-    - mv -f spec/internal/config/database.yml.ci spec/internal/config/database.yml
+    - echo 'skipping'

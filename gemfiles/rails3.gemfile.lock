@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/pat/combustion.git
+  revision: 91c040e7df0110f563e4dc8a7343c33b856532be
+  specs:
+    combustion (0.5.1)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
+      thor (>= 0.14.6)
+
 PATH
   remote: ..
   specs:
@@ -43,10 +52,6 @@ GEM
     builder (3.0.4)
     coderay (1.0.9)
     columnize (0.3.6)
-    combustion (0.5.1)
-      activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
-      thor (>= 0.14.6)
     debugger (1.6.2)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -137,8 +142,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
-  appraisal (>= 1.0.0.beta1)
-  combustion
+  appraisal (>= 1.0.0.beta)
+  combustion!
   factory_girl
   generator_spec
   pry-debugger

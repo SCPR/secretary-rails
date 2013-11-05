@@ -4,10 +4,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'combustion'
-
 Combustion.initialize! :active_record
-
-Combustion::Database.setup
 
 require 'rspec/rails'
 require 'factory_girl'
