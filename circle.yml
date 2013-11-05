@@ -1,7 +1,7 @@
 test:
   override:
-    - bundle exec rake appraisal:install
-    - bundle exec rake appraisal test
+    - bundle exec appraisal
+    - bundle exec appraisal rake test
 
 database:
   override:
