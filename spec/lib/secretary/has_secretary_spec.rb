@@ -39,6 +39,15 @@ describe Secretary::HasSecretary do
       Secretary.versioned_models.should include "Story"
     end
 
+    it 'sets versioned attributes if option is specified' do
+      Animal.versioned_attributes.should eq ["name", "color"]
+    end
+
+    it 'sets excluded attributes if option is specified' do
+      Person.versioned_attributes.should_not include "name"
+      Person.versioned_attributes.should_not include "ethnicity"
+    end
+
     it "adds the has_many association for versions" do
       new_story.versions.to_a.should eq Array.new
     end

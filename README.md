@@ -163,30 +163,41 @@ Sometimes you have an attribute on your model that either isn't public
 (not in the form), or you just don't want to version. You can tell Secretary
 to ignore these attributes globally by setting
 `Secretary.config.ignore_attributes`. You can also ignore attributes on a
-per-model basis by using one of two methods:
+per-model basis by using one of two options:
+
+**NOTE** The attributes *must* be specified as Strings.
 
 ```ruby
 class Article < ActiveRecord::Base
-  has_secretary
-
-  # Included
-  self.versioned_attributes = ["headline", "body"]
+  # Inclusion
+  has_secretary on: ["headline", "body"]
 end
 ```
 
 ```ruby
 class Article < ActiveRecord::Base
-  has_secretary
-
-  # Excluded
-  self.unversioned_attributes = ["published_at", "is_editable"]
+# Exclusion
+  has_secretary except: ["published_at", "is_editable"]
 end
 ```
 
-By default, `versioned_attributes` is the model's column names, minus the
-globally configured `ignored_attributes`, minus any `unversioned_attributes`
-you have set. `tracks_association` adds those associations to the
-`versioned_attributes` array.
+By default, the versioned attributes are: the model's column names, minus the
+globally configured `ignored_attributes`, minus any excluded attributes
+you have set.
+
+Using `tracks_association` adds those associations to the
+`versioned_attributes` array:
+
+```ruby
+class Article < ActiveRecord::Base
+  has_secretary on: ["headline"]
+
+  has_many :images
+  tracks_association :images
+end
+
+Article.versioned_attributes # => ["headline", "images"]
+``` 
 
 
 ## Contributing

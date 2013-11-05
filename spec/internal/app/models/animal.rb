@@ -1,7 +1,5 @@
 class Animal < ActiveRecord::Base
-  has_secretary
+  has_secretary on: ["name", "color"]
 
   belongs_to :person
-
-  self.versioned_attributes = ["name", "color"]
 end
