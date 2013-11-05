@@ -90,9 +90,6 @@ module Secretary
           add_callback_methods("before_remove_for_#{name}", [
             :"preload_#{name}_were"
           ])
-
-          add_callback_methods("after_add_for_#{name}", [])
-          add_callback_methods("after_remove_for_#{name}", [])
         end
       end
 
