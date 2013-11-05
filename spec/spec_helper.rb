@@ -1,4 +1,3 @@
-# SECRETARY SPEC HELPER
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'rubygems'
