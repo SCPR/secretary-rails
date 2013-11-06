@@ -14,6 +14,11 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 
+  create_table "cars_locations", force: true do |t|
+    t.integer "car_id"
+    t.integer "location_id"
+  end
+
   create_table "hobbies", force: true do |t|
     t.string "title"
     t.integer "person_id"
@@ -40,10 +45,16 @@ ActiveRecord::Schema.define do
     t.integer "location_id"
     t.timestamps
   end
-  
+
   create_table "stories", force: true do |t|
     t.string  "headline"
     t.text    "body"
+    t.timestamps
+  end
+
+  create_table "story_users", force: true do |t|
+    t.integer "story_id"
+    t.integer "user_id"
     t.timestamps
   end
 
