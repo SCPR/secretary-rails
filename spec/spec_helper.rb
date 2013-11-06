@@ -3,8 +3,11 @@ ENV["RAILS_ENV"] ||= 'test'
 require 'rubygems'
 require 'bundler/setup'
 
-require 'combustion'
-Combustion.initialize! :active_record, :action_view
+# This allows us to run the suite with the `rspec` CLI if we want to.
+load 'spec/support/test_setup.rb'
+TestSetup.setup
+
+$stdout.puts "*** [secretary] Database: #{TestSetup.database}"
 
 require 'rspec/rails'
 require 'factory_girl'
@@ -17,4 +20,8 @@ RSpec.configure do |config|
   config.order = "random"
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
+
+  config.after :suite do
+    TestSetup.remove_database_config
+  end
 end

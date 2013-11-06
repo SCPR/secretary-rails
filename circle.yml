@@ -1,8 +1,8 @@
 test:
   override:
     - GEM_HOME=./vendor/bundle/ruby/1.9.1 gem install bundler
-    - bundle exec appraisal
-    - bundle exec appraisal rake test
+    - bundle exec rake test:setup
+    - bundle exec rake test
 
 database:
   override:

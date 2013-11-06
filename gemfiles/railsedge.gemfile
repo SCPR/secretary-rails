@@ -2,9 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "appraisal", :github=>"bricker/appraisal"
-gem "combustion", :github=>"pat/combustion"
-gem "generator_spec", :github=>"bricker/generator_spec"
 gem "activerecord", :github=>"rails/rails"
 gem "railties", :github=>"rails/rails"
 gem "actionview", :github=>"rails/rails"
@@ -12,6 +9,9 @@ gem "actionview", :github=>"rails/rails"
 group :test do
   gem "test_after_commit"
   gem "pry-debugger"
+  gem "generator_spec", "~> 0.9.1"
+  gem "appraisal", :github=>"thoughtbot/appraisal"
+  gem "combustion", :github=>"bricker/combustion", :branch=>"fix-recreate"
 end
 
 gemspec :path=>".././"

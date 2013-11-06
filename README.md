@@ -253,6 +253,18 @@ Fork it and send a pull request!
   new object).
 
 ### Running Tests
-This library uses [appraisal](https://github.com/thoughtbot/appraisal) to test
-against different Rails versions. To run the test suite on all versions, use
-`appraisal rspec`.
+Running the full suite requires that you have SQLite, MySQL, and Postgres
+servers all installed and running. Once you have them setup, setup the
+databases by running `bundle exec rake test:setup`. This will create the
+databases you need. You should only need to run this once.
+
+Secretary uses the [`appraisals`](https://rubygems.org/gems/appraisals) gem
+to run its tests across different versions of Rails.
+
+See the Rakefile for all of the options for running the tests.
+
+**To run the full test suite:**
+
+```
+$ bundle exec rake test
+```

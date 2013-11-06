@@ -1,23 +1,7 @@
 GIT
-  remote: git://github.com/bricker/appraisal.git
-  revision: ba106522c5d24b4d037f7c99b1ba0e1897ae6e7b
-  specs:
-    appraisal (1.0.0.beta1)
-      bundler
-      rake
-      thor (>= 0.14.0)
-
-GIT
-  remote: git://github.com/bricker/generator_spec.git
-  revision: 22c29cbbc1b1cbbc34e636b825e2b997e04a0f02
-  specs:
-    generator_spec (0.9.0)
-      activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
-
-GIT
-  remote: git://github.com/pat/combustion.git
-  revision: 91c040e7df0110f563e4dc8a7343c33b856532be
+  remote: git://github.com/bricker/combustion.git
+  revision: 4478bc61af87d7c511225564fb6c3882b4ab16f5
+  branch: fix-recreate
   specs:
     combustion (0.5.1)
       activesupport (>= 3.0.0)
@@ -56,6 +40,15 @@ GIT
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
 
+GIT
+  remote: git://github.com/thoughtbot/appraisal.git
+  revision: 4cf908f43ae5f6c0e1ef829029fef8b598dbf04a
+  specs:
+    appraisal (1.0.0.beta1)
+      bundler
+      rake
+      thor (>= 0.14.0)
+
 PATH
   remote: ..
   specs:
@@ -83,10 +76,15 @@ GEM
     erubis (2.7.0)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
+    generator_spec (0.9.1)
+      activesupport (>= 3.0.0)
+      railties (>= 3.0.0)
     i18n (0.6.5)
     json (1.8.1)
     method_source (0.8.2)
     minitest (5.0.8)
+    mysql2 (0.3.13)
+    pg (0.17.0)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -126,7 +124,9 @@ DEPENDENCIES
   appraisal!
   combustion!
   factory_girl
-  generator_spec!
+  generator_spec (~> 0.9.1)
+  mysql2
+  pg
   pry-debugger
   railties!
   rspec-rails
