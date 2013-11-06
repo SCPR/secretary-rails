@@ -152,6 +152,39 @@ class ArticlesController < ApplicationControler
 end
 ```
 
+### Viewing Diffs
+The `Secretary::Version` model allows you to see unix-style diffs of the
+changes, using the [`diffy`](http://rubygems.org/gems/diffy) gem. The diffs
+are represented as a hash, where the key is the name of the attribute, and the
+value is the `Diffy::Diff` object.
+
+```ruby
+article = Article.new(headline: "Old Headline", body: "Lorem ipsum...")
+article.save
+
+article.update_attributes(headline: "Updated Headline", body: "Updated Body")
+
+last_version = article.versions.last
+puts last_version.attribute_diffs
+
+{"headline"=>
+  -Old Headline
+\ No newline at end of file
++Updated Headline
+\ No newline at end of file
+,
+ "body"=>
+  -Lorem ipsum...
+\ No newline at end of file
++Updated Body
+\ No newline at end of file
+}
+```
+
+This is just the simple text representation of the `Diffy::Diff` objects.
+Diffy also provides several other output formats. See
+[diffy's README](https://github.com/samg/diffy/tree/master) for more options.
+
 ### Configuration
 In an initializer (may we suggest `secretary.rb`?), add:
 
