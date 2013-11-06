@@ -4,7 +4,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'combustion'
-Combustion.initialize! :active_record
+Combustion.initialize! :active_record, :action_view
 
 require 'rspec/rails'
 require 'factory_girl'
