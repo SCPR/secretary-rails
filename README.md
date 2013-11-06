@@ -94,6 +94,13 @@ changes, which will include the information about the author(s).
 
 You can also pass in multiple association names into `tracks_association`.
 
+This also works on all other association types in the same way:
+* has_many
+* has_many :through
+* has_and_belongs_to_many
+* has_one
+* belongs_to
+
 ### Dirty Associations
 Secretary provides Rails-style `dirty attributes` for associations.
 Given an association `has_many :pets`, the methods available are:
