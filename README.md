@@ -261,7 +261,7 @@ databases you need. You should only need to run this once.
 Secretary uses the [`appraisals`](https://rubygems.org/gems/appraisals) gem
 to run its tests across different versions of Rails.
 
-See the Rakefile for all of the options for running the tests.
+Run `rake -T` to see all of the options for running the tests.
 
 **To run the full test suite:**
 
