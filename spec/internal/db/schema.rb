@@ -7,9 +7,23 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 
+  create_table "cars", force: true do |t|
+    t.string "name"
+    t.string "color"
+    t.integer "year"
+    t.timestamps
+  end
+
   create_table "hobbies", force: true do |t|
     t.string "title"
     t.integer "person_id"
+    t.timestamps
+  end
+
+  create_table "images", force: true do |t|
+    t.string "title"
+    t.string "url"
+    t.integer "story_id"
     t.timestamps
   end
 

@@ -50,46 +50,34 @@ module Secretary
           raise NotVersionedError, self.name
         end
 
-        self.versioned_attributes += associations.map(&:to_s)
-
-        include InstanceMethodsOnActivation
-
         associations.each do |name|
-          module_eval <<-EOE, __FILE__, __LINE__ + 1
-            def #{name}_were
-              @#{name}_were ||= association_was("#{name}")
-            end
+          reflection = self.reflect_on_association(name)
 
-            def #{name}_changed?
-              association_changed?("#{name}")
-            end
+          if !reflection
+            raise NoAssociationError, name, self.name
+          end
 
+          self.versioned_attributes << name.to_s
 
-            private
+          if reflection.collection?
+            include Dirty::CollectionAssociation
+            add_dirty_collection_association_methods(name)
 
-            def preload_#{name}_were(object)
-              #{name}_were
-            end
+            add_callback_methods("before_add_for_#{name}", [
+              :"preload_#{name}"
+            ])
 
-            def check_for_#{name}_changes
-              check_for_association_changes("#{name}")
-            end
+            add_callback_methods("before_remove_for_#{name}", [
+              :"preload_#{name}"
+            ])
 
-            def clear_dirty_#{name}
-              @#{name}_were = nil
-            end
-          EOE
+          else
+            include Dirty::SingularAssociation
+            add_dirty_singular_association_methods(name)
+          end
 
           before_save :"check_for_#{name}_changes"
           after_commit :"clear_dirty_#{name}"
-
-          add_callback_methods("before_add_for_#{name}", [
-            :"preload_#{name}_were"
-          ])
-
-          add_callback_methods("before_remove_for_#{name}", [
-            :"preload_#{name}_were"
-          ])
         end
       end
 
@@ -99,44 +87,6 @@ module Secretary
         original  = send(method_name)
         methods   = original + new_methods
         send("#{method_name}=", methods)
-      end
-    end
-
-
-    module InstanceMethodsOnActivation
-      private
-
-      # This has to be run in a before_save callback,
-      # because we can't rely on the after_add, etc. callbacks
-      # to fill in our custom changes. For example, setting
-      # `self.animals_attributes=` doesn't run these callbacks.
-      def check_for_association_changes(name)
-        persisted   = self.send("#{name}_were")
-        current     = self.send(name).to_a.reject(&:marked_for_destruction?)
-
-        persisted_attributes  = persisted.map(&:versioned_attributes)
-        current_attributes    = current.map(&:versioned_attributes)
-
-        if persisted_attributes != current_attributes
-          ensure_custom_changes_for_association(name, persisted)
-          self.custom_changes[name][1] = current_attributes
-        end
-      end
-
-      def association_was(name)
-        self.persisted? ? self.class.find(self.id).send(name).to_a : []
-      end
-
-      def association_changed?(name)
-        check_for_association_changes(name)
-        self.custom_changes[name].present?
-      end
-
-      def ensure_custom_changes_for_association(name, persisted=nil)
-        self.custom_changes[name] ||= [
-          (persisted || self.send("#{name}_were")).map(&:versioned_attributes),
-          Array.new
-        ]
       end
     end
   end
