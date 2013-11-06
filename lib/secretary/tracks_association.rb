@@ -63,14 +63,19 @@ module Secretary
             include Dirty::CollectionAssociation
             add_dirty_collection_association_methods(name)
 
-            add_callback_methods("before_add_for_#{name}", [
-              :"preload_#{name}"
-            ])
+            add_callback_methods(:before_add, reflection,
+              [:"preload_#{name}"])
 
-            add_callback_methods("before_remove_for_#{name}", [
-              :"preload_#{name}"
-            ])
+            add_callback_methods(:before_remove, reflection,
+              [:"preload_#{name}"])
 
+            if ActiveRecord::VERSION::STRING >= "4.1.0"
+              ActiveRecord::Associations::Builder::CollectionAssociation
+              .define_callbacks(self, reflection)
+            else
+              redefine_callback(:before_add, name, reflection)
+              redefine_callback(:before_remove, name, reflection)
+            end
           else
             include Dirty::SingularAssociation
             add_dirty_singular_association_methods(name)
@@ -83,10 +88,16 @@ module Secretary
 
       private
 
-      def add_callback_methods(method_name, new_methods)
-        original  = send(method_name)
-        methods   = original + new_methods
-        send("#{method_name}=", methods)
+      def add_callback_methods(callback_name, reflection, new_methods)
+        reflection.options[callback_name] ||= Array.new
+        reflection.options[callback_name] += new_methods
+      end
+
+      # Necessary for Rails < 4.1
+      def redefine_callback(callback_name, name, reflection)
+        send("#{callback_name}_for_#{name}=",
+          Array(reflection.options[callback_name])
+        )
       end
     end
   end
