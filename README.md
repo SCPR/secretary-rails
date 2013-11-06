@@ -1,5 +1,7 @@
 # Secretary
 
+[![Build Status](https://circleci.com/gh/SCPR/secretary-rails.png?circle-token=f1fadff9935d408e019bf9599b68aaf7a406d13b)](https://circleci.com/gh/SCPR/secretary-rails)
+
 #### A note about the Gem name
 There is another gem called [`secretary`](http://rubygems.org/gems/secretary),
 which hasn't been updated since 2008 and is obsolete. This gem is called
