@@ -4,6 +4,7 @@
   `has_secretary on: []` and `has_secretary except: []`. This ensures that
   attributes will be declared before any `tracks_association` are called.
 * Added support for singular associations tracking (has_one, belongs_to)
+* Added support for Rails 4.1 (edge)
 
 
 ## 1.0.0.beta1 (2013-11-05)
