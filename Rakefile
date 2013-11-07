@@ -15,6 +15,8 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = false
 end
 
+task :default => :test
+
 # Full test suite!
 desc "Run the full test suite (All supported Rails version, all supported DBs)."
 task :test do
