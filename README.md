@@ -25,10 +25,19 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 
 ### Compatibility
 * Rails 3.2, 4.0, 4.1, edge
-* Ruby 1.9.3, 2.0.0, 2.1.0
+* Ruby 1.9.3, 2.0.0
 * SQLite
 * MySQL
 * PostgreSQL
+
+#### A note about incompatible versions
+* **Ruby 1.8.7** - Since Ruby 1.8.7 was EOL'd, I can't in good conscience
+  encourage its use. However, I will make an effort to use 1.8.7-style hash
+  and lambda syntax, and I will consider accepting pull requests which fix the
+  library for Ruby 1.8.7 users.
+* **Rails < 3.2** - Currently, Rails < 3.2 is not officially supported.
+  I eventually want to support as many versions of Rails, within reason, as
+  possible.
 
 ### Dependencies
 * [`activerecord`](http://rubygems.org/gems/activerecord) >= 3.2.0
@@ -248,6 +257,7 @@ Fork it and send a pull request!
 
 ### TODO
 * See [Issues](https://github.com/SCPR/secretary-rails/issues).
+* Add support for other ORM's besides ActiveRecord.
 * Associations are only tracked one-level deep, It would be nice to also
   track the changes of the association (i.e. recognize when an associated
   object was changed and show its changed, instead of just showing a whole
