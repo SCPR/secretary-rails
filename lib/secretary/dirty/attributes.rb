@@ -26,6 +26,15 @@ module Secretary
       end
 
 
+      if ActiveRecord::VERSION::STRING < "4.1.0"
+        def reload(*)
+          result = super
+          clear_custom_changes
+          result
+        end
+      end
+
+
       private
 
       if ActiveRecord::VERSION::STRING >= "4.1.0"
@@ -37,13 +46,6 @@ module Secretary
         def reset_changes
           super
           clear_custom_changes
-        end
-
-      else
-        def reload(*)
-          super.tap do
-            clear_custom_changes
-          end
         end
       end
 
