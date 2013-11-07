@@ -1,3 +1,18 @@
+## 1.0.0.beta3
+#### Additions
+* A bunch of additional tests for:
+  * has_many :through
+  * has_and_belongs_to_many
+  * MySQL
+  * PostgreSQL
+* Lots of additional documentation
+
+#### Changes
+* Refactored some code to clean up has_secretary module. Moved Dirty Attribute
+  methods into their own module, where (eventually) the full ActiveModel::Dirty
+  API will be implemented for associations as well.
+
+
 ## 1.0.0.beta2
 #### Additions
 * Added better way to declare attribute inclusion/exclusion:
@@ -7,7 +22,7 @@
 * Added support for Rails 4.1 (edge)
 
 
-## 1.0.0.beta1 (2013-11-05)
+## 1.0.0.beta1
 * Beta for stable 1.0 release.
 
 
