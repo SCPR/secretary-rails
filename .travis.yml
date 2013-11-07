@@ -1,0 +1,13 @@
+language: ruby
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+  - 2.0.0
+  - ruby-head
+before_script:
+  - "bundle exec rake test:setup"
+gemfile:
+  - gemfiles/rails32.gemfile
+  - gemfiles/rails40.gemfile
+  - gemfiles/railsedge.gemfile
