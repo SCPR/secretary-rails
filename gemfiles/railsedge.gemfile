@@ -8,6 +8,7 @@ gem "actionview", :github=>"rails/rails"
 
 group :test do
   gem "test_after_commit"
+  gem "pry-debugger"
   gem "combustion", :github=>"bricker/combustion", :branch=>"fix-recreate"
 end
 

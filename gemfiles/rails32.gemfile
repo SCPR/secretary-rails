@@ -7,6 +7,7 @@ gem "railties", "~> 3.2.0"
 
 group :test do
   gem "test_after_commit"
+  gem "pry-debugger"
   gem "combustion", :github=>"bricker/combustion", :branch=>"fix-recreate"
 end
 

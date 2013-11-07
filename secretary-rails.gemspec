@@ -28,5 +28,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency "factory_girl"
   s.add_development_dependency "generator_spec", "~> 0.9.1"
   s.add_development_dependency "appraisal", ">= 1.0.0.beta2"
-  s.add_development_dependency "pry-debugger"
 end
