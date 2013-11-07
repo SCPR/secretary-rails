@@ -65,10 +65,7 @@ module Secretary
         changes.each do |attribute, values|
           # values is [previous_value, new_value]
           diff = Diffy::Diff.new(values[0].to_s, values[1].to_s)
-
-          if diff.string1 != diff.string2
-            attribute_diffs[attribute] = diff
-          end
+          attribute_diffs[attribute] = diff
         end
 
         attribute_diffs
