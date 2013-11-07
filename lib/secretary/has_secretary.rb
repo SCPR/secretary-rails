@@ -31,9 +31,13 @@ module Secretary
         attr_accessor :logged_user_id
 
         after_save    :generate_version, if: -> { self.changed? }
-        after_commit  :clear_custom_changes
+
+        if ActiveRecord::VERSION::STRING < "4.1.0"
+          after_commit  :clear_custom_changes
+        end
 
         send :include, InstanceMethodsOnActivation
+        send :include, Dirty::Attributes
       end
     end
 
@@ -42,43 +46,6 @@ module Secretary
       # Generate a version for this object.
       def generate_version
         Version.generate(self)
-      end
-
-      # Use Rails built-in Dirty attributions to get
-      # the easy ones. By the time we're generating
-      # this version, this hash could already
-      # exist with some custom changes.
-      def changes
-        self.custom_changes.reverse_merge super
-      end
-
-      # Use Rails' `changed?`, plus check our own custom changes
-      # to see if an object has been modified.
-      def changed?
-        super || custom_changes.present?
-      end
-
-      # Similar to ActiveModel::Dirty#changes, but lets us
-      # pass in some custom changes (such as associations)
-      # which wouldn't be picked up by the built-in method.
-      #
-      # This method should only be used for adding custom changes
-      # to the changes hash. For storing and comparing and whatnot,
-      # use #changes as usual.
-      #
-      # This method basically exists just to get around the behavior
-      # of #changes (since it sends the attribute message to the
-      # object, which we don't always want, for associations for
-      # example).
-      def custom_changes
-        @custom_changes ||= HashWithIndifferentAccess.new
-      end
-
-
-      private
-
-      def clear_custom_changes
-        self.custom_changes.clear
       end
     end
   end
