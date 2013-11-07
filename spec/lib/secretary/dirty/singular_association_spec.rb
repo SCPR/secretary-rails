@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Secretary::Dirty::SingularAssociation do
   describe 'has_one' do
     let(:story) { create :story }
-    let(:image) { create :image, title: "Superman", url: "superman.jpg" }
+    let(:image) { create :image, :title => "Superman", :url => "superman.jpg" }
 
     it 'sets association_was' do
       story.image = image
@@ -167,8 +167,8 @@ describe Secretary::Dirty::SingularAssociation do
 
 
   describe 'belongs_to' do
-    let(:story) { create :story, headline: "Headline", body: "Body" }
-    let(:image) { create :image, title: "Superman", url: "superman.jpg" }
+    let(:story) { create :story, :headline => "Headline", :body => "Body" }
+    let(:image) { create :image, :title => "Superman", :url => "superman.jpg" }
 
     it 'sets association_was' do
       image.story = story

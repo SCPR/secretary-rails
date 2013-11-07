@@ -2,8 +2,8 @@ module Secretary
   class Version < ActiveRecord::Base
     serialize :object_changes
 
-    belongs_to :versioned, polymorphic: true
-    belongs_to :user, class_name: Secretary.config.user_class
+    belongs_to :versioned, :polymorphic => true
+    belongs_to :user, :class_name => Secretary.config.user_class
 
     validates_presence_of :versioned
 

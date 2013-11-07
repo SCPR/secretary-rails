@@ -65,7 +65,7 @@ describe Secretary::HasSecretary do
     end
 
     it "generates a version when a record is changed" do
-      other_story.update_attributes(headline: "Some Cool Headline?!")
+      other_story.update_attributes(:headline => "Some Cool Headline?!")
       Secretary::Version.count.should eq 2
       other_story.versions.size.should eq 2
     end
@@ -78,7 +78,7 @@ describe Secretary::HasSecretary do
     end
 
     it "destroys all versions when the object is destroyed" do
-      other_story.update_attributes!(headline: "Changed the headline")
+      other_story.update_attributes!(:headline => "Changed the headline")
       other_story.versions.size.should eq 2
       Secretary::Version.count.should eq 2
       other_story.destroy

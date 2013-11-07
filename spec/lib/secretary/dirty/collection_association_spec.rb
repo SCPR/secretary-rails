@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Secretary::Dirty::CollectionAssociation do
   describe 'has_many' do
     let(:person) { create :person }
-    let(:animal) { create :animal, name: "Bob", color: "dog" }
+    let(:animal) { create :animal, :name => "Bob", :color => "dog" }
 
     it 'sets associations_were' do
       person.animals << animal
@@ -37,7 +37,7 @@ describe Secretary::Dirty::CollectionAssociation do
 
     it 'makes a version when adding' do
       person  = create :person
-      animal  = build :animal, name: "Bryan", color: 'lame'
+      animal  = build :animal, :name => "Bryan", :color => 'lame'
 
       person.animals << animal
       person.save!
@@ -53,7 +53,7 @@ describe Secretary::Dirty::CollectionAssociation do
 
     it 'makes a version when removing' do
       person  = build :person
-      animal  = build :animal, name: "Bryan", color: 'lame'
+      animal  = build :animal, :name => "Bryan", :color => 'lame'
       person.animals = [animal]
       person.save!
       person.versions.count.should eq 1
@@ -189,7 +189,9 @@ describe Secretary::Dirty::CollectionAssociation do
 
   describe 'has_and_belongs_to_many' do
     let(:car) { create :car }
-    let(:location) { create :location, title: "Home", address: "123 Fake St." }
+    let(:location) {
+      create :location, :title => "Home", :address => "123 Fake St."
+    }
 
     it 'sets associations_were' do
       car.locations << location
@@ -370,7 +372,7 @@ describe Secretary::Dirty::CollectionAssociation do
 
   describe 'has_many :through' do
     let(:story) { create :story }
-    let(:user) { create :user, name: "Bryan" }
+    let(:user) { create :user, :name => "Bryan" }
 
     it 'sets associations_were' do
       story.users << user

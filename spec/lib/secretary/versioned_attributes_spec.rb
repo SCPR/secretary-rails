@@ -36,7 +36,7 @@ describe Secretary::VersionedAttributes do
 
 
   describe '#versioned_attributes' do
-    let(:animal) { create :animal, name: "Henry", color: "henry" }
+    let(:animal) { create :animal, :name => "Henry", :color => "henry" }
 
     it 'is only the attributes we want' do
       animal.versioned_attributes.should eq Hash[{

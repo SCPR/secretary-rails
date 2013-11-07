@@ -3,13 +3,13 @@ require 'spec_helper'
 describe Secretary::TracksAssociation do
   describe '::tracks_association' do
     it "raises an error if the model isn't versioned" do
-      -> {
+      lambda {
         User.tracks_association
       }.should raise_error Secretary::NotVersionedError
     end
 
     it "raises an error if there is no association with the given name" do
-      -> {
+      lambda {
         Person.tracks_association :giraffes
       }.should raise_error Secretary::NoAssociationError
     end

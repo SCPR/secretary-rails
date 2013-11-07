@@ -9,9 +9,9 @@ describe Secretary::Dirty::Attributes do
 
   describe '#changes' do
     it 'is the built-in changes reverse-merged with custom changes' do
-      story = create :story, headline: "Original Headline"
+      story = create :story, :headline => "Original Headline"
       story.headline = "Updated Headline!"
-      story.custom_changes['assets'] = [[], { a: 1, b: 2 }]
+      story.custom_changes['assets'] = [[], { :a => 1, :b => 2 }]
 
       story.changes.should eq Hash[{
         'headline' => ['Original Headline', "Updated Headline!"],
@@ -24,7 +24,7 @@ describe Secretary::Dirty::Attributes do
   describe '#changed?' do
     it 'checks if custom changes are present as well' do
       other_story.changed?.should eq false
-      other_story.custom_changes['assets'] = [[], { a: 1, b: 2 }]
+      other_story.custom_changes['assets'] = [[], { :a => 1, :b => 2 }]
       other_story.changed?.should eq true
     end
   end

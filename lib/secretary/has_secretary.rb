@@ -30,7 +30,7 @@ module Secretary
 
         attr_accessor :logged_user_id
 
-        after_save :generate_version, if: -> { self.changed? }
+        after_save :generate_version, :if => lambda { self.changed? }
 
         include Dirty::Attributes
         include InstanceMethodsOnActivation

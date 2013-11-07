@@ -9,6 +9,6 @@ appraise "rails40" do
 end
 
 appraise "railsedge" do
-  gems.each { |g| gem g, github: "rails/rails" }
-  gem 'actionview', github: 'rails/rails'
+  gems.each { |g| gem g, :github => "rails/rails" }
+  gem 'actionview', :github => 'rails/rails'
 end

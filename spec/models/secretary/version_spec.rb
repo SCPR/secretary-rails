@@ -14,7 +14,7 @@ describe Secretary::Version do
 
   describe "generating description" do
     let(:story) {
-      build :story, headline: "Cool story, bro", body: "Cool text, bro."
+      build :story, :headline => "Cool story, bro", :body => "Cool text, bro."
     }
 
     it "generates a description with object name on create" do
@@ -24,7 +24,7 @@ describe Secretary::Version do
 
     it "generates a description with the changed attributes on update" do
       story.save!
-      story.update_attributes(headline: "Another Headline", body: "New Body")
+      story.update_attributes(:headline => "Another Headline", :body => "New Body")
       story.versions.last.description.should eq "Changed headline and body"
     end
   end
@@ -37,11 +37,11 @@ describe Secretary::Version do
     end
 
     it "increments version number if versions already exist" do
-      story = create :story, headline: "Some Headline"
+      story = create :story, :headline => "Some Headline"
       story.versions.last.version_number.should eq 1
-      story.update_attributes(headline: "Cooler story, bro.")
+      story.update_attributes(:headline => "Cooler story, bro.")
       story.versions.last.version_number.should eq 2
-      story.update_attributes(headline: "Coolest story, bro!")
+      story.update_attributes(:headline => "Coolest story, bro!")
       story.versions.last.version_number.should eq 3
     end
   end
@@ -49,8 +49,8 @@ describe Secretary::Version do
 
   describe '#attribute_diffs' do
     it 'is a hash of attribute keys, and Diffy::Diff objects' do
-      story = create :story, headline: "Cool story, bro"
-      story.update_attributes!(headline: "Updated Headline")
+      story = create :story, :headline => "Cool story, bro"
+      story.update_attributes!(:headline => "Updated Headline")
 
       version = story.versions.last
       version.attribute_diffs.keys.should eq ["headline"]
