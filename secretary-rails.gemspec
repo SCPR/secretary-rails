@@ -1,16 +1,14 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-# Maintain your gem's version:
 require "secretary/gem_version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "secretary-rails"
   s.version     = Secretary::GEM_VERSION
   s.authors     = ["Bryan Ricker"]
   s.email       = ["bricker@scpr.org"]
   s.homepage    = "https://github.com/scpr/secretary-rails"
-  s.license     = 'MIT'
+  s.license     = "MIT"
   s.summary     = "Light-weight model versioning for ActiveRecord."
   s.description = "A Rails engine that provides simple versioning for " \
                   "your records."
@@ -27,6 +25,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "mysql2"
   s.add_development_dependency "pg"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency 'appraisal', '>= 1.0.0.beta'
   s.add_development_dependency "factory_girl"
+  s.add_development_dependency "generator_spec", "~> 0.9.1"
+  s.add_development_dependency "appraisal", ">= 1.0.0.beta2"
+  s.add_development_dependency "pry-debugger"
 end
