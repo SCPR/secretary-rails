@@ -30,14 +30,10 @@ module Secretary
 
         attr_accessor :logged_user_id
 
-        after_save    :generate_version, if: -> { self.changed? }
+        after_save :generate_version, if: -> { self.changed? }
 
-        if ActiveRecord::VERSION::STRING < "4.1.0"
-          after_commit  :clear_custom_changes
-        end
-
-        send :include, InstanceMethodsOnActivation
-        send :include, Dirty::Attributes
+        include Dirty::Attributes
+        include InstanceMethodsOnActivation
       end
     end
 
