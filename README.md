@@ -24,10 +24,11 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 * It is simple.
 
 ### Compatibility
-* Rails 3.2+
+* Rails 3.2, 4.0, 4.1, edge
+* Ruby 1.9.3, 2.0.0, 2.1.0
 * SQLite
-* MySQL? (untested)
-* PostgreSQL? (untested)
+* MySQL
+* PostgreSQL
 
 ### Dependencies
 * [`activerecord`](http://rubygems.org/gems/activerecord) >= 3.2.0
