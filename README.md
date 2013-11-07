@@ -258,6 +258,10 @@ servers all installed and running. Once you have them setup, setup the
 databases by running `bundle exec rake test:setup`. This will create the
 databases you need. You should only need to run this once.
 
+If you get a message like `FATAL:  database "combustion_test" does not exist`
+when running `rake test:setup`, it's okay (you can ignore it). The database
+gets created anyways.
+
 Secretary uses the [`appraisals`](https://rubygems.org/gems/appraisals) gem
 to run its tests across different versions of Rails.
 
