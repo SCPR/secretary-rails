@@ -1,3 +1,8 @@
+## 1.0.0beta5
+#### Fixes
+* Fixed error where adding an inherited class to a collection association.
+
+
 ## 1.0.0.beta4
 #### Changes
 * [BREAKING] Remove custom_changes, instead we're just using the

@@ -75,7 +75,12 @@ module Secretary
 
     def association_name(association_object)
       klass = association_object.class
-      name = self.class.reflections.find { |r| r[1].klass == klass }[0]
+
+      reflection = self.class.reflections.find do |name, reflection|
+        reflection.klass >= klass
+      end
+
+      reflection[0] if reflection
     end
   end
 end
