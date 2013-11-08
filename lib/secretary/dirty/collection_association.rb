@@ -8,27 +8,27 @@ module Secretary
 
         def add_dirty_collection_association_methods(name)
           module_eval <<-EOE, __FILE__, __LINE__ + 1
-            def #{name}_were
-              @#{name}_were ||= collection_association_was("#{name}")
-            end
 
             def #{name}_changed?
-              collection_association_changed?("#{name}")
+              attribute_changed?("#{name}")
             end
 
+            def #{name}_change
+              attribute_change("#{name}")
+            end
+
+            def #{name}_were
+              attribute_was("#{name}")
+            end
+
+            def #{name}_will_change!
+              attribute_will_change!("#{name}")
+            end
 
             private
 
-            def preload_#{name}(object)
-              #{name}_were
-            end
-
-            def check_for_#{name}_changes
-              check_for_collection_association_changes("#{name}")
-            end
-
-            def clear_dirty_#{name}
-              @#{name}_were = nil
+            def prepare_#{name}_to_change(object)
+              #{name}_will_change!
             end
           EOE
         end
@@ -37,37 +37,13 @@ module Secretary
 
       private
 
-      # This has to be run in a before_save callback,
-      # because we can't rely on the after_add, etc. callbacks
-      # to fill in our custom changes. For example, setting
-      # `self.animals_attributes=` doesn't run these callbacks.
-      def check_for_collection_association_changes(name)
-        persisted   = self.send("#{name}_were")
-        current     = self.send(name).to_a.reject(&:marked_for_destruction?)
-
-        persisted_attributes  = persisted.map(&:versioned_attributes)
-        current_attributes    = current.map(&:versioned_attributes)
-
-        if persisted_attributes != current_attributes
-          ensure_custom_changes_for_collection_association(name, persisted)
-          self.custom_changes[name][1] = current_attributes
-        end
-      end
-
-      def collection_association_was(name)
-        self.persisted? ? self.class.find(self.id).send(name).to_a : []
-      end
-
-      def collection_association_changed?(name)
-        check_for_collection_association_changes(name)
-        self.custom_changes[name].present?
-      end
-
-      def ensure_custom_changes_for_collection_association(name, persisted=nil)
-        self.custom_changes[name] ||= [
-          (persisted || self.send("#{name}_were")).map(&:versioned_attributes),
-          Array.new
-        ]
+      def assign_to_or_mark_for_destruction(record, *args)
+        klass = record.class
+        name = self.class.reflections.find { |r| r[1].klass == klass }[0]
+        super(record, *args)
+        binding.pry
+        send("#{name}_will_change!")
+        binding.pry
       end
     end
   end

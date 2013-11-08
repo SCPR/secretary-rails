@@ -64,10 +64,10 @@ module Secretary
             add_dirty_collection_association_methods(name)
 
             add_callback_methods(:before_add, reflection,
-              [:"preload_#{name}"])
+              [:"prepare_#{name}_to_change"])
 
             add_callback_methods(:before_remove, reflection,
-              [:"preload_#{name}"])
+              [:"prepare_#{name}_to_change"])
 
             if ActiveRecord::VERSION::STRING >= "4.1.0"
               ActiveRecord::Associations::Builder::CollectionAssociation
@@ -80,9 +80,6 @@ module Secretary
             include Dirty::SingularAssociation
             add_dirty_singular_association_methods(name)
           end
-
-          before_save :"check_for_#{name}_changes"
-          after_commit :"clear_dirty_#{name}"
         end
       end
 

@@ -93,7 +93,7 @@ describe Secretary::Dirty::CollectionAssociation do
         }]
       end
 
-      it 'adds a new version when changing something in collection' do
+      it 'adds a new version when changing something in collection', focus: true do
         animals_attributes = [
           {
             "id" => animal.id,

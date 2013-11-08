@@ -20,22 +20,23 @@ module Secretary
       # I didn't want to override the public ActiveRecord
       # API.
       def generate(object)
+        changes = object.versioned_changes
+
         object.versions.create({
           :user_id          => object.logged_user_id,
-          :description      => generate_description(object),
-          :object_changes   => object.versioned_changes
+          :description      => generate_description(object, changes.keys),
+          :object_changes   => changes
         })
       end
 
 
       private
 
-      def generate_description(object)
+      def generate_description(object, attributes)
         if was_created?(object)
           "Created #{object.class.name.titleize} ##{object.id}"
 
         elsif was_updated?(object)
-          attributes = object.versioned_changes.keys
           "Changed #{attributes.to_sentence}"
 
         else
