@@ -29,6 +29,9 @@ module Secretary
             attribute_change("#{name}")
           end
 
+
+          private
+
           def #{name}_will_change!
             return if attribute_changed?("#{name}")
 
