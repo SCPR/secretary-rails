@@ -19,10 +19,6 @@ module Secretary
       #
       #   tracks_association :bylines
       #
-      # Forcing the changes into the custom_changes allows us
-      # to keep track of dirty associations, so that checking stuff
-      # like `changed?` will work.
-      # 
       # If you want to control when an association should be left out of the
       # version, define an instance method named `should_reject_#{name}?`.
       # This method takes a hash of the model's attributes (so you can pass

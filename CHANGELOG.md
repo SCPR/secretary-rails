@@ -1,3 +1,9 @@
+## 1.0.0.beta4
+#### Changes
+* [BREAKING] Remove custom_changes, instead we're just using the
+  ActiveModel::Dirty interface.
+
+
 ## 1.0.0.beta3
 #### Additions
 * A bunch of additional tests for:
