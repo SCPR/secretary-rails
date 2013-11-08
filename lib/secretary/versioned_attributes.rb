@@ -40,10 +40,36 @@ module Secretary
 
 
     # The hash that gets serialized into the `object_changes` column.
+    #
+    # This takes the `changes` hash and processes the associations to be
+    # human-readable objects.
     def versioned_changes
-      self.changes.select { |k,_| versioned_attribute?(k) }.to_hash
+      modified_changes = {}
+      raw_changes = self.changes.select {|k,_| versioned_attribute?(k)}.to_hash
+
+      raw_changes.each do |key, (previous, current)|
+        if reflection = self.class.reflect_on_association(key.to_sym)
+          if reflection.collection?
+            previous = previous.map(&:versioned_attributes)
+            current  = current.map(&:versioned_attributes)
+          else
+            previous = previous ? previous.versioned_attributes : {}
+
+            current  = if current && !current.marked_for_destruction?
+              current.versioned_attributes
+            else
+              {}
+            end
+          end
+        end
+
+        modified_changes[key] = [previous, current]
+      end
+
+      modified_changes
     end
 
+    # The object's versioned attributes as a hash.
     def versioned_attributes
       json = self.as_json(:root => false).select do |k,_|
         versioned_attribute?(k)
@@ -52,6 +78,7 @@ module Secretary
       json.to_hash
     end
 
+    # Check if the passed-in attribute is versioned.
     def versioned_attribute?(key)
       self.class.versioned_attributes.include?(key.to_s)
     end

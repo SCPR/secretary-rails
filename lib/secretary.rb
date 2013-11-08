@@ -31,7 +31,7 @@ module Secretary
   autoload :HasSecretary
   autoload :VersionedAttributes
   autoload :TracksAssociation
-  autoload :Dirty
+  autoload :DirtyAssociations
 end
 
 ActiveSupport.on_load(:active_record) do

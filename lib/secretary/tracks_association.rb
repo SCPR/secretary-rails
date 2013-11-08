@@ -50,6 +50,8 @@ module Secretary
           raise NotVersionedError, self.name
         end
 
+        include DirtyAssociations
+
         associations.each do |name|
           reflection = self.reflect_on_association(name)
 
@@ -59,46 +61,25 @@ module Secretary
 
           self.versioned_attributes << name.to_s
 
+          define_dirty_association_methods(name, reflection)
+
           if reflection.collection?
-            include Dirty::CollectionAssociation
-            add_dirty_collection_association_methods(name)
-
-            add_callback_methods(:before_add, reflection,
-              [:"preload_#{name}"])
-
-            add_callback_methods(:before_remove, reflection,
-              [:"preload_#{name}"])
-
-            if ActiveRecord::VERSION::STRING >= "4.1.0"
-              ActiveRecord::Associations::Builder::CollectionAssociation
-              .define_callbacks(self, reflection)
-            else
-              redefine_callback(:before_add, name, reflection)
-              redefine_callback(:before_remove, name, reflection)
-            end
+            include DirtyAssociations::Collection
+            add_collection_callbacks(name, reflection)
           else
-            include Dirty::SingularAssociation
-            add_dirty_singular_association_methods(name)
+            include DirtyAssociations::Singular
+            define_singular_association_writer(name)
           end
-
-          before_save :"check_for_#{name}_changes"
-          after_commit :"clear_dirty_#{name}"
         end
       end
+    end
 
-      private
 
-      def add_callback_methods(callback_name, reflection, new_methods)
-        reflection.options[callback_name] ||= Array.new
-        reflection.options[callback_name] += new_methods
-      end
+    private
 
-      # Necessary for Rails < 4.1
-      def redefine_callback(callback_name, name, reflection)
-        send("#{callback_name}_for_#{name}=",
-          Array(reflection.options[callback_name])
-        )
-      end
+    def association_name(association_object)
+      klass = association_object.class
+      name = self.class.reflections.find { |r| r[1].klass == klass }[0]
     end
   end
 end

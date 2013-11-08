@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Secretary::Dirty::CollectionAssociation do
+describe "Dirty Collection Association" do
   describe 'has_many' do
     let(:person) { create :person }
     let(:animal) { create :animal, :name => "Bob", :color => "dog" }
