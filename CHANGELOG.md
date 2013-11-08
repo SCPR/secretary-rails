@@ -1,5 +1,7 @@
 ## 1.0.0beta5
 #### Fixes
+* Make sure assigning nested attributes only makes the model dirty for tracked
+  associations.
 * Fixed error where adding an inherited class to a collection association.
 
 

@@ -82,7 +82,8 @@ module Secretary
     def assign_to_or_mark_for_destruction(record, *args)
       name = association_name(record)
 
-      if self.class.reflect_on_association(name).collection?
+      if self.class.reflect_on_association(name).collection? &&
+      versioned_attribute?(name)
         previous = changed_attributes[name]
 
         # Assume it will change. It may not. We'll handle that scenario
