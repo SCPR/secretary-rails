@@ -32,7 +32,6 @@ module Secretary
 
         after_save :generate_version, :if => lambda { self.changed? }
 
-        include Dirty::Attributes
         include InstanceMethodsOnActivation
       end
     end

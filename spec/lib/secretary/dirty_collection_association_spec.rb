@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Secretary::Dirty::CollectionAssociation do
+describe "Dirty Collection Association" do
   describe 'has_many' do
     let(:person) { create :person }
     let(:animal) { create :animal, :name => "Bob", :color => "dog" }
@@ -93,7 +93,7 @@ describe Secretary::Dirty::CollectionAssociation do
         }]
       end
 
-      it 'adds a new version when changing something in collection', focus: true do
+      it 'adds a new version when changing something in collection' do
         animals_attributes = [
           {
             "id" => animal.id,

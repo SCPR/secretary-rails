@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Secretary::Dirty::Attributes do
+describe Secretary::DirtyAssociations do
   let(:other_story) {
     create :story,
       :headline         => "Cooler Story, Bro",

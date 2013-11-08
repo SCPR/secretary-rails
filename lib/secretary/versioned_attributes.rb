@@ -53,8 +53,13 @@ module Secretary
             previous = previous.map(&:versioned_attributes)
             current  = current.map(&:versioned_attributes)
           else
-            previous = previous.versioned_attributes
-            current  = current.versioned_attributes
+            previous = previous ? previous.versioned_attributes : {}
+
+            current  = if current && !current.marked_for_destruction?
+              current.versioned_attributes
+            else
+              {}
+            end
           end
         end
 

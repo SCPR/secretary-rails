@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Secretary::Dirty::SingularAssociation do
+describe "Dirty Singular Association" do
   describe 'has_one' do
     let(:story) { create :story }
     let(:image) { create :image, :title => "Superman", :url => "superman.jpg" }
@@ -242,6 +242,16 @@ describe Secretary::Dirty::SingularAssociation do
 
         image.story = story
         image.story_changed?.should eq false
+      end
+
+      it 'is true when switching to or from nil' do
+        # image.story is nil
+        image.story = story
+        image.story_changed?.should eq true
+        image.save!
+
+        image.story = nil
+        image.story_changed?.should eq true
       end
     end
   end
