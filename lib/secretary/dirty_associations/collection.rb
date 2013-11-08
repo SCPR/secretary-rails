@@ -31,7 +31,7 @@ module Secretary
       # If there were previous changes, then reset the changes to the last 
       # ones. Otherwise, just delete that empty key/value from the hash.
       def reset_changes_if_unchanged(record, name, previous)
-        if !record.changed?
+        if record.versioned_changes.empty?
           name = name.to_s
 
           if previous

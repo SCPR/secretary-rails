@@ -76,17 +76,21 @@ module Secretary
     # for the association, then accepts_nested_attributes_for would
     # have to be declared *before* tracks_association, which is too
     # strict for my tastes.
-    def assign_to_or_mark_for_destruction(record, attributes, *args)
-      name        = association_name(record)
-      collection  = self.class.reflect_on_association(name).collection?
-      previous    = changed_attributes[name] if collection
+    def assign_to_or_mark_for_destruction(record, *args)
+      name = association_name(record)
 
-      # Assume it will change. It may not. We'll handle that scenario
-      # after the attributes have been assigned.
-      send("#{name}_will_change!")
-      super(record, attributes, *args)
+      if self.class.reflect_on_association(name).collection?
+        previous = changed_attributes[name]
 
-      reset_changes_if_unchanged(record, name, previous) if collection
+        # Assume it will change. It may not. We'll handle that scenario
+        # after the attributes have been assigned.
+        send("#{name}_will_change!")
+        super(record, *args)
+
+        reset_changes_if_unchanged(record, name, previous)
+      else
+        super(record, *args)
+      end
     end
   end
 end
