@@ -3,6 +3,8 @@
 * Make sure assigning nested attributes only makes the model dirty for tracked
   associations.
 * Fixed error where adding an inherited class to a collection association.
+* Rescue when assigning nested attributes so that `db:schema:load` can be
+  called properly.
 
 
 ## 1.0.0.beta4
