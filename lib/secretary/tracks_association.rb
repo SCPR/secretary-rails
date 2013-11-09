@@ -55,7 +55,20 @@ module Secretary
             raise NoAssociationError, name, self.name
           end
 
-          self.versioned_attributes << name.to_s
+          # If the environment is loaded, the following line will be
+          # evaluated for any `tracks_association` calls. `versioned_attributes`
+          # calls `self.column_names`, which requires the table to exist.
+          #
+          # So the problem is that if our database or table doesn't exist,
+          # we can't load the environment, and the environment needs to be
+          # loaded in order to load in the schema.
+          #
+          # So, we rescue! And warn.
+          begin
+            self.versioned_attributes << name.to_s
+          rescue => e
+            warn  "Caught an error while updating versioned attributes. #{e}"
+          end
 
           define_dirty_association_methods(name, reflection)
 
