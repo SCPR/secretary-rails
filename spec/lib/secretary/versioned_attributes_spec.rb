@@ -16,7 +16,7 @@ describe Secretary::VersionedAttributes do
     end
 
     it "raises ArgumentError if any of the attributes aren't strings" do
-      -> {
+      lambda {
         Person.versioned_attributes = [:a, :b, "c"]
       }.should raise_error ArgumentError
     end
