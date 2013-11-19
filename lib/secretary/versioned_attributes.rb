@@ -74,7 +74,16 @@ module Secretary
           end
         end
 
-        modified_changes[key] = [previous, current]
+        # This really shouldn't need to be here,
+        # but there is some confusion if we're destroying
+        # an associated object in a save callback on the
+        # parent object. We can't know that the callback
+        # is going to destroy this object on save,
+        # so we just have to add the association normally
+        # and then filter it out here.
+        if previous != current
+          modified_changes[key] = [previous, current]
+        end
       end
 
       modified_changes
