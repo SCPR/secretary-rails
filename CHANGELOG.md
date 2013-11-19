@@ -1,3 +1,17 @@
+## 1.0.0.beta6
+#### Fixes
+* Only add an attribute to `versioned_changes` if it changed significantly.
+  This fixes the problem where a `has_one` association was creating a version
+  no matter what.
+
+#### Changes
+* Use memoized `versioned_changes` in callbacks for performance optimization.
+* Only create a version if `versioned_changes` is present. The previous
+  behavior was to create a version if `changed?` was true, which was creating
+  empty versions (because `changed?` could be true for an attribute that we're
+  not versioning)
+
+
 ## 1.0.0.beta5
 #### Fixes
 * Make sure assigning nested attributes only makes the model dirty for tracked
