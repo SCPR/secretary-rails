@@ -36,7 +36,7 @@ FactoryGirl.define do
     name "Bryan Ricker"
   end
 
-  factory :version, class: "Secretary::Version" do
+  factory :version, :class => "Secretary::Version" do
     versioned { |v| v.association :story }
     user
   end
