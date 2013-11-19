@@ -251,6 +251,34 @@ end
 Article.versioned_attributes # => ["headline", "images"]
 ``` 
 
+#### Changes vs. Versions
+There is one aspect that may seem a bit confusing. The behavior of
+`record.changes`, and other Dirty attribute methods from ActiveModel, is
+preserved, so any attribute you change will be added to the record's changes.
+**However**, this does *not* necessarily mean that a version will be created,
+because you may have changed an attribute that isn't versioned. For example:
+
+```ruby
+class Article < ActiveRecord::Base
+  has_secretary on: ["headline", "body"]
+end
+
+article = Article.find(1)
+article.changed? #=> false
+
+article.slug = "new-slug-for-article" # "slug" is not versioned
+article.changed? #=> true
+article.changed #=> ["slug"]
+
+article.versioned_changes #=> {}
+article.save! # A new version isn't created!
+```
+
+This also goes for associations: if you change an association on a parent
+object, but in an "insignificant" way (i.e., no versioned attributes are
+changed), then that association won't be considered "changed" when it comes
+time to build the version.
+
 
 ## Contributing
 Fork it and send a pull request!
