@@ -1,4 +1,4 @@
-## 1.0.0.beta6
+## 1.0.0
 #### Fixes
 * Only add an attribute to `versioned_changes` if it changed significantly.
   This fixes the problem where a `has_one` association was creating a version
