@@ -14,10 +14,40 @@ describe Secretary::VersionedAttributes do
       Person.versioned_attributes.should_not include "name"
       Person.versioned_attributes.should_not include "ethnicity"
     end
+  end
+
+  describe '::versioned_attributes=' do
+    it 'sets the versioned attributes' do
+      original = Person.versioned_attributes
+
+      Person.versioned_attributes = ["name"]
+      Person.versioned_attributes.should eq ["name"]
+
+      Person.versioned_attributes = original
+    end
 
     it "raises ArgumentError if any of the attributes aren't strings" do
       lambda {
         Person.versioned_attributes = [:a, :b, "c"]
+      }.should raise_error ArgumentError
+    end
+  end
+
+
+  describe '::unversioned_attributes=' do
+    it "removes the attributes from the versioned attributes" do
+      original = Person.versioned_attributes
+
+      Person.versioned_attributes = ["name", "ethnicity"]
+      Person.unversioned_attributes = ["name"]
+      Person.versioned_attributes.should eq ["ethnicity"]
+
+      Person.versioned_attributes = original
+    end
+
+    it "raises ArgumentError if any of the attributes aren't strings" do
+      lambda {
+        Person.unversioned_attributes = [:a, :b, "c"]
       }.should raise_error ArgumentError
     end
   end
