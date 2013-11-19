@@ -6,6 +6,11 @@
 * Rescue when assigning nested attributes so that `db:schema:load` can be
   called properly.
 
+#### Changes
+* `#versioned_attributes=` will now raise an error if you pass it anything but
+  an array of strings. This is to prevent someone from passing in symbols
+  and getting subtle bugs.
+
 
 ## 1.0.0.beta4
 #### Changes

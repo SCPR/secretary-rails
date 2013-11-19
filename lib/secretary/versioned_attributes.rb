@@ -17,7 +17,10 @@ module Secretary
         # which attributes to ignore.
         #
         # Each takes an array of column names *as strings*.
-        attr_writer :versioned_attributes
+        def versioned_attributes=(attributes)
+          verify_strings!(attributes)
+          @versioned_attributes = attributes
+        end
 
         def versioned_attributes
           @versioned_attributes ||=
@@ -26,14 +29,22 @@ module Secretary
             unversioned_attributes
         end
 
-        def unversioned_attributes=(array)
-          self.versioned_attributes -= array
+        def unversioned_attributes=(attributes)
+          verify_strings!(attributes)
+          self.versioned_attributes -= attributes
         end
 
         private
 
         def unversioned_attributes
           @unversioned_attributes ||= []
+        end
+
+        def verify_strings!(array)
+          if array.any? { |e| !e.is_a?(String) }
+            raise ArgumentError,
+              "Versioned attributes must be declared as strings."
+          end
         end
       end
     end

@@ -14,6 +14,12 @@ describe Secretary::VersionedAttributes do
       Person.versioned_attributes.should_not include "name"
       Person.versioned_attributes.should_not include "ethnicity"
     end
+
+    it "raises ArgumentError if any of the attributes aren't strings" do
+      -> {
+        Person.versioned_attributes = [:a, :b, "c"]
+      }.should raise_error ArgumentError
+    end
   end
 
 
