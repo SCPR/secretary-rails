@@ -102,5 +102,23 @@ module Secretary
     def versioned_attribute?(key)
       self.class.versioned_attributes.include?(key.to_s)
     end
+
+
+    private
+
+    # Memoized version changes.
+    # This is just so when we're near the end of an object's journey to
+    # persistence, we don't have to keep running the whole `versioned_changes`
+    # method, which is rather expensive. When we reach that point, we can
+    # be reasonably certain that no additional changes will occur, so it's
+    # safe to memoize the method. However, while an object is being modified,
+    # memoizing would be wrong, since that hash it constantly changing.
+    def __versioned_changes
+      @__versioned_changes ||= versioned_changes
+    end
+
+    def reset_versioned_changes
+      @__versioned_changes = nil
+    end
   end
 end

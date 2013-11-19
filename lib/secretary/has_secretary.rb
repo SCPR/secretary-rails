@@ -31,6 +31,7 @@ module Secretary
         attr_accessor :logged_user_id
 
         after_save :generate_version, :if => lambda { self.changed? }
+        after_save :reset_versioned_changes
 
         include InstanceMethodsOnActivation
       end

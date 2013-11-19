@@ -20,7 +20,7 @@ module Secretary
       # I didn't want to override the public ActiveRecord
       # API.
       def generate(object)
-        changes = object.versioned_changes
+        changes = object.send(:__versioned_changes)
 
         object.versions.create({
           :user_id          => object.logged_user_id,
