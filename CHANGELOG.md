@@ -1,4 +1,4 @@
-## 1.0.0beta5
+## 1.0.0.beta5
 #### Fixes
 * Make sure assigning nested attributes only makes the model dirty for tracked
   associations.
