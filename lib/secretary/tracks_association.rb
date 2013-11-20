@@ -66,6 +66,11 @@ module Secretary
           # So, we rescue! And warn.
           begin
             self.versioned_attributes << name.to_s
+
+            if reflection.macro == :belongs_to
+              self.versioned_attributes << reflection.foreign_key
+            end
+
           rescue => e
             warn  "Caught an error while updating versioned attributes. #{e}"
           end

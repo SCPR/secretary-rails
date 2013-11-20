@@ -2,6 +2,12 @@
 #### Changes
 * Humanized attributes in Version Description.
 
+#### Fixes
+* Automatically add the foreign key to versioned attributes for a belongs_to
+  association. Before, it was only adding the association name, which caused
+  a version not to be created when updating a belongs_to association via a form
+  if the foreign key wasn't in the `versioned_attributes` list.
+
 
 ## 1.0.0
 #### Fixes

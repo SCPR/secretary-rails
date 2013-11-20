@@ -33,8 +33,9 @@ describe "Dirty Singular Association" do
       version.object_changes["image"][0].should eq Hash[]
 
       version.object_changes["image"][1].should eq Hash[{
-        "title" => "Superman",
-        "url" => "superman.jpg"
+        "title"       => "Superman",
+        "url"         => "superman.jpg",
+        "story_id"    => story.id
       }]
     end
 
@@ -49,8 +50,9 @@ describe "Dirty Singular Association" do
 
       versions = story.versions.order('version_number').to_a
       versions.last.object_changes["image"][0].should eq Hash[{
-        "title" => "Superman",
-        "url" => "superman.jpg"
+        "title"       => "Superman",
+        "url"         => "superman.jpg",
+        "story_id"    => story.id
       }]
       versions.last.object_changes["image"][1].should eq Hash[]
     end
@@ -70,8 +72,9 @@ describe "Dirty Singular Association" do
         version = story.versions.order('version_number').last
         version.object_changes["image"][0].should eq Hash[]
         version.object_changes["image"][1].should eq Hash[{
-          "title" => "Superman",
-          "url" => "super.jpg"
+          "title"       => "Superman",
+          "url"         => "super.jpg",
+          "story_id"    => story.id
         }]
       end
 
@@ -91,12 +94,14 @@ describe "Dirty Singular Association" do
 
         version = story.versions.order('version_number').last
         version.object_changes["image"][0].should eq Hash[{
-          "title" => "Superman",
-          "url" => "superman.jpg"
+          "title"       => "Superman",
+          "url"         => "superman.jpg",
+          "story_id"    => story.id
         }]
         version.object_changes["image"][1].should eq Hash[{
           "title" => "Lemon",
-          "url" => "superman.jpg"
+          "url" => "superman.jpg",
+          "story_id" => story.id
         }]
       end
 
@@ -116,8 +121,9 @@ describe "Dirty Singular Association" do
 
         version = story.versions.order('version_number').last
         version.object_changes["image"][0].should eq Hash[{
-          "title" => "Superman",
-          "url" => "superman.jpg"
+          "title"       => "Superman",
+          "url"         => "superman.jpg",
+          "story_id"    => story.id
         }]
         version.object_changes["image"][1].should eq Hash[]
       end
@@ -203,6 +209,17 @@ describe "Dirty Singular Association" do
         "headline" => "Headline",
         "body" => "Body"
       }]
+    end
+
+    it "tracks the foreign key as the normally" do
+      image.story_id = story.id
+      image.save!
+      image.versions.count.should eq 2
+
+      version = image.versions.order('version_number').last
+      version.object_changes["story_id"][0].should eq nil
+      version.object_changes["story_id"][1].should eq story.id
+      version.description.should eq "Changed Story"
     end
 
     it 'makes a version when removing' do
