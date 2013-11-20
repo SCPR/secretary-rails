@@ -24,8 +24,14 @@ describe Secretary::Version do
 
     it "generates a description with the changed attributes on update" do
       story.save!
-      story.update_attributes(:headline => "Another Headline", :body => "New Body")
-      story.versions.last.description.should eq "Changed headline and body"
+      image = create :image
+
+      image.update_attributes({
+        :story_id   => story.id,
+        :url        => "http://kitty.com/kitty.jpg"
+      })
+
+      image.versions.last.description.should eq("Changed Story and Url")
     end
   end
 

@@ -1,3 +1,8 @@
+## 1.0.1
+#### Changes
+* Humanized attributes in Version Description.
+
+
 ## 1.0.0
 #### Fixes
 * Only add an attribute to `versioned_changes` if it changed significantly.

@@ -33,11 +33,13 @@ module Secretary
       private
 
       def generate_description(object, attributes)
+        changed_attributes = attributes.map(&:humanize).to_sentence
+
         if was_created?(object)
           "Created #{object.class.name.titleize} ##{object.id}"
 
         elsif was_updated?(object)
-          "Changed #{attributes.to_sentence}"
+          "Changed #{changed_attributes}"
 
         else
           "Generated Version"
