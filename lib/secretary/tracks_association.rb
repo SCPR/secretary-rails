@@ -72,7 +72,8 @@ module Secretary
             end
 
           rescue => e
-            warn  "Caught an error while updating versioned attributes. #{e}"
+            warn  "[secretary-rails] Caught an error while loading " \
+                  "#{self.name}. #{e}"
           end
 
           define_dirty_association_methods(name, reflection)
