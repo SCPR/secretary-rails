@@ -56,8 +56,9 @@ module Secretary
           end
 
           # If the environment is loaded, the following line will be
-          # evaluated for any `tracks_association` calls. `versioned_attributes`
-          # calls `self.column_names`, which requires the table to exist.
+          # evaluated for any `tracks_association` calls.
+          # `versioned_attributes` calls `self.column_names`,
+          # which requires the table to exist.
           #
           # So the problem is that if our database or table doesn't exist,
           # we can't load the environment, and the environment needs to be
