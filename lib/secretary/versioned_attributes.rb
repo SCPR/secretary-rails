@@ -6,7 +6,11 @@ module Secretary
       class << self
         # Set the attributes which Secretary should keep track of.
         #
-        # Example:
+        # Arguments
+        #
+        # * attributes - (Hash) The attributes that should be versioned.
+        #
+        # Example
         #
         #   class Article < ActiveRecord::Base
         #     self.versioned_attributes = [:id, :created_at]
@@ -17,6 +21,8 @@ module Secretary
         # which attributes to ignore.
         #
         # Each takes an array of column names *as strings*.
+        #
+        # Returns Hash
         def versioned_attributes=(attributes)
           verify_strings!(attributes)
           @versioned_attributes = attributes

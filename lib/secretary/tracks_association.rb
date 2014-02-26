@@ -8,7 +8,12 @@ module Secretary
       # the saved record will get a new version, with association
       # diffs and everything.
       #
-      # Example:
+      # Arguments
+      #
+      # associations - (Symbols) A variable number of association
+      #                names to track
+      #
+      # Example
       #
       #   has_secretary
       #
@@ -25,7 +30,7 @@ module Secretary
       # in, for example, form params). This also lets you easily share this
       # method with `accepts_nested_attributes_for`.
       #
-      # Example:
+      # Example
       #
       #   class Person < ActiveRecord::Base
       #     has_secretary
@@ -41,6 +46,8 @@ module Secretary
       #       attributes['name'].blank?
       #     end
       #   end
+      #
+      # Returns nothing
       def tracks_association(*associations)
         if !self.has_secretary?
           raise NotVersionedError, self.name
