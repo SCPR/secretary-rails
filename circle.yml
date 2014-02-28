@@ -1,6 +1,6 @@
 ruby:
   version:
-    '2.1.0-p0'
+    '2.1.1'
 
 test:
   override:
