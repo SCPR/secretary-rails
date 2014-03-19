@@ -19,5 +19,9 @@ module Secretary
     def copy_migration
       migration_template "versions_migration.rb", "db/migrate/secretary_create_versions"
     end
+
+    def copy_config
+      template "secretary_config.rb", "config/initializers/secretary.rb"
+    end
   end
 end
