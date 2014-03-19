@@ -12,6 +12,6 @@ describe Secretary::InstallGenerator do
   end
 
   it 'copies the migration file' do
-    assert_migration "db/migrate/create_versions"
+    assert_migration "db/migrate/secretary_create_versions"
   end
 end
