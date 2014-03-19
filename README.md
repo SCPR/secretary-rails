@@ -162,6 +162,8 @@ class ArticlesController < ApplicationControler
 end
 ```
 
+**Protip**: Using `outpost-secretary`? This is taken care of for you. Just be sure to add the `logged_user_id` to your Strong Parameters.
+
 ### Viewing Diffs
 The `Secretary::Version` model allows you to see unix-style diffs of the
 changes, using the [`diffy`](http://rubygems.org/gems/diffy) gem. The diffs
@@ -196,15 +198,7 @@ Diffy also provides several other output formats. See
 [diffy's README](https://github.com/samg/diffy/tree/master) for more options.
 
 ### Configuration
-In an initializer (may we suggest `secretary.rb`?), add:
-
-```ruby
-# This is a list of all the possible configurations and their defaults.
-Secretary.configure do |config|
-  config.user_class         = "::User"
-  config.ignored_attributes = ["id", "created_at", "updated_at"]
-end
-```
+The install task will create an initializer for you with the following options:
 
 * **user_class** - The class for your user model.
 * **ignored_attributes** - The attributes which should always be ignored
@@ -249,7 +243,7 @@ class Article < ActiveRecord::Base
 end
 
 Article.versioned_attributes # => ["headline", "images"]
-``` 
+```
 
 #### Changes vs. Versions
 There is one aspect that may seem a bit confusing. The behavior of
