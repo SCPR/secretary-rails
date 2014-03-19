@@ -4,7 +4,7 @@ class SecretaryCreateVersions < ActiveRecord::Migration
       t.integer  "version_number"
       t.string   "versioned_type"
       t.integer  "versioned_id"
-      t.string   "user_id"
+      t.integer  "user_id"
       t.text     "description"
       t.text     "object_changes"
       t.datetime "created_at"
