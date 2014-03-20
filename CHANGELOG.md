@@ -1,12 +1,15 @@
-## 1.0.1
+## 1.1.0
 #### Changes
 * Humanized attributes in Version Description.
+* Activities association is now added to the User class automatically.
 
 #### Fixes
 * Automatically add the foreign key to versioned attributes for a belongs_to
   association. Before, it was only adding the association name, which caused
   a version not to be created when updating a belongs_to association via a form
   if the foreign key wasn't in the `versioned_attributes` list.
+* Fixed migration generator
+* Fixes bug where db:schema:load couldn't run if the user class specified versioned attributes.
 
 
 ## 1.0.0
