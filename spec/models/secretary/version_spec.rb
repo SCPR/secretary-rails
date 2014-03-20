@@ -9,6 +9,14 @@ describe Secretary::Version do
       Secretary::Version.count.should eq 2
       story.versions.last.should eq version
     end
+
+    it "sets the user association" do
+      user = create :user
+      story   = create :story, logged_user_id: user.id
+      version = Secretary::Version.generate(story)
+
+      story.versions.last.user.should eq user
+    end
   end
 
 
