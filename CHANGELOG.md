@@ -1,4 +1,4 @@
-## 1.1.0
+## 1.1.0 (2014-03-19)
 #### Changes
 * Humanized attributes in Version Description.
 * Activities association is now added to the User class automatically.
