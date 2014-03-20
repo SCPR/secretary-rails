@@ -5,7 +5,7 @@ module Secretary
     config.autoload_paths << File.expand_path(
       "../../../../app/models/concerns", __FILE__)
 
-    config.after_initialize do
+    config.to_prepare do
       Secretary.config.user_class.constantize.instance_eval do
         include Secretary::UserActivityAssociation
       end
