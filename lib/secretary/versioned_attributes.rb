@@ -28,9 +28,14 @@ module Secretary
           @versioned_attributes = attributes
         end
 
+
+        # We need to rescue here because this method might be called when
+        # running a database task, before the table has been created.
+        # Since we're calling `column_names`, which checks the database
+        # directly, it will throw an error if the table doesn't exist.
         def versioned_attributes
           @versioned_attributes ||=
-            self.column_names -
+            __safe_column_names -
             Secretary.config.ignored_attributes -
             unversioned_attributes
         end
@@ -39,6 +44,7 @@ module Secretary
           verify_strings!(attributes)
           self.versioned_attributes -= attributes
         end
+
 
         private
 
@@ -50,6 +56,15 @@ module Secretary
           if array.any? { |e| !e.is_a?(String) }
             raise ArgumentError,
               "Versioned attributes must be declared as strings."
+          end
+        end
+
+        def __safe_column_names
+          begin
+            self.column_names
+          rescue ActiveRecord::StatementInvalid => e
+            warn "Caught an error when loading #{self.name}: #{e}\n"
+            return []
           end
         end
       end
