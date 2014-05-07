@@ -57,9 +57,10 @@ module Secretary
         EOE
       end
 
-      def add_callback_methods(callback_name, reflection, new_methods)
-        reflection.options[callback_name] ||= Array.new
-        reflection.options[callback_name] += new_methods
+      def add_callback_methods(cb_name, reflection, new_methods)
+        # The callbacks may not be an Array, so we'll force them into one.
+        reflection.options[cb_name] = Array(reflection.options[cb_name])
+        reflection.options[cb_name] += new_methods
       end
 
       # Necessary for Rails < 4.1
