@@ -8,10 +8,10 @@ module Secretary
 
         def add_collection_callbacks(name, reflection)
           add_callback_methods(:before_add, reflection,
-            [:"prepare_to_change_association"])
+            [:prepare_to_change_association])
 
           add_callback_methods(:before_remove, reflection,
-            [:"prepare_to_change_association"])
+            [:prepare_to_change_association])
 
           if ActiveRecord::VERSION::STRING >= "4.1.0"
             ActiveRecord::Associations::Builder::CollectionAssociation
@@ -28,7 +28,7 @@ module Secretary
 
 
       # If the record wasn't changed, we need to reset the changed_attributes.
-      # If there were previous changes, then reset the changes to the last 
+      # If there were previous changes, then reset the changes to the last
       # ones. Otherwise, just delete that empty key/value from the hash.
       def reset_changes_if_unchanged(record, name, previous)
         if record.versioned_changes.empty?
