@@ -1,3 +1,8 @@
+## 1.1.1 (TBD)
+#### Fixes
+* Forces callbacks into an array before trying to add Secretary callbacks. This fixes compatibility with `ar-octopus` library.
+
+
 ## 1.1.0 (2014-03-19)
 #### Changes
 * Humanized attributes in Version Description.
