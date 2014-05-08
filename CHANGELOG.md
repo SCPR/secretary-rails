@@ -1,4 +1,4 @@
-## 1.1.1 (TBD)
+## 1.1.1 (2014-05-07)
 #### Fixes
 * Forces callbacks into an array before trying to add Secretary callbacks. This fixes compatibility with `ar-octopus` library.
 * Fixed an error where `tracks_association` was raising `NotImplementError` if `:dependent` was defined on the association. ([#12](https://github.com/SCPR/secretary-rails/issues/12))
