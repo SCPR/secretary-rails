@@ -17,7 +17,7 @@ module Secretary
     source_root File.expand_path("../templates", __FILE__)
 
     def copy_migration
-      migration_template "versions_migration.rb", "db/migrate/secretary_create_versions"
+      migration_template "versions_migration.rb", "db/migrate/secretary_create_versions.rb"
     end
 
     def copy_config

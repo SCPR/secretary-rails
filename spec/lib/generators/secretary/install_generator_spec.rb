@@ -12,11 +12,10 @@ describe Secretary::InstallGenerator do
   end
 
   it 'copies the migration file' do
-    assert_migration "db/migrate/secretary_create_versions"
+    assert_migration "db/migrate/secretary_create_versions.rb"
   end
 
   it 'copies the config' do
     assert_file "config/initializers/secretary.rb"
   end
-
 end
