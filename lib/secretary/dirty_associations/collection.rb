@@ -14,7 +14,7 @@ module Secretary
             [:prepare_to_change_association])
 
           if ActiveRecord::VERSION::STRING >= "4.1.0"
-            ActiveRecord::Associations::Builder::CollectionAssociation
+            ActiveRecord::Associations::Builder::HasMany
             .define_callbacks(self, reflection)
           else
             redefine_callback(:before_add, name, reflection)

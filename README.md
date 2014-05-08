@@ -25,7 +25,7 @@ foreign keys to the object, and a foreign key to the user who saved the object.
 
 ### Compatibility
 * Rails 3.2, 4.0, 4.1, edge
-* Ruby 1.9.3, 2.0.0
+* Ruby 1.9.3, 2.0.0, 2.1.1
 * SQLite
 * MySQL
 * PostgreSQL
