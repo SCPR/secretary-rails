@@ -1,3 +1,8 @@
+## 1.1.2 (TBD)
+#### Changes
+* Better dependency declarations
+
+
 ## 1.1.1 (2014-05-07)
 #### Fixes
 * Forces callbacks into an array before trying to add Secretary callbacks. This fixes compatibility with `ar-octopus` library.

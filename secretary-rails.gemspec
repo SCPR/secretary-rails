@@ -17,9 +17,9 @@ Gem::Specification.new do |s|
             ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "railties", ">= 3.2.0"
-  s.add_dependency "activerecord", ">= 3.2.0"
-  s.add_dependency "diffy", "~> 3.0.1"
+  s.add_dependency "railties", [">= 3.2.0", "< 5"]
+  s.add_dependency "activerecord", [">= 3.2.0", "< 5"]
+  s.add_dependency "diffy", [">= 3.0", "< 4"]
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
