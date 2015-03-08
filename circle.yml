@@ -9,6 +9,12 @@ test:
     - bundle exec rake test:setup
     - bundle exec rake test
 
+dependencies:
+  override:
+    - export RACK_ENV=test
+    - export RAILS_ENV=test
+    - bundle install --jobs=4 --retry=3
+
 database:
   override:
     - echo 'skipping default circleci database task'
