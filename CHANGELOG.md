@@ -1,4 +1,3 @@
-
 ## 2.0
 #### Changes
 * [BREAKING] Drop ruby 1.9.3 support.
@@ -9,6 +8,9 @@
 * Add Ruby 2.2 support.
 * Add Rails 4.2 support.
 * Add Rails 5 (edge) support.
+
+#### Fixes
+* Fix an error with `HashWithIndifferentAccess` in Rails 4.2
 
 
 ## 1.1.1 (2014-05-07)
