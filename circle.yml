@@ -11,4 +11,4 @@ test:
 
 database:
   override:
-    - echo 'skipping'
+    - echo 'skipping default circleci database task'
