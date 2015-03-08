@@ -53,7 +53,7 @@ GIT
 PATH
   remote: ../
   specs:
-    secretary-rails (2.0.0.pre)
+    secretary-rails (2.0.0.rc1)
       activerecord (>= 3.2.0, < 6)
       diffy (>= 3.0, < 4)
       railties (>= 3.2.0, < 6)

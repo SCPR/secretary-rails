@@ -1,6 +1,7 @@
-ruby:
-  version:
-    '2.2.1'
+machine:
+  ruby:
+    version:
+      '2.2.1'
 
 test:
   override:
