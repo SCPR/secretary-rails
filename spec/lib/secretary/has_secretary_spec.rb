@@ -20,69 +20,69 @@ describe Secretary::HasSecretary do
 
   describe "::has_secretary?" do
     it "returns false if no has_secretary declared" do
-      User.has_secretary?.should eq false
+      expect(User.has_secretary?).to eq false
     end
 
     it "returns true if @_has_secretary is true" do
-      Story.has_secretary?.should eq true
+      expect(Story.has_secretary?).to eq true
     end
   end
 
 
   describe "::has_secretary" do
     it "sets @_has_secretary to true" do
-      Story.has_secretary?.should eq true
+      expect(Story.has_secretary?).to eq true
     end
 
     it 'adds the model to Secretary.versioned_models' do
       Story # Load the class
-      Secretary.versioned_models.should include "Story"
+      expect(Secretary.versioned_models).to include "Story"
     end
 
     it 'sets versioned attributes if option is specified' do
-      Animal.versioned_attributes.should eq ["name", "color"]
+      expect(Animal.versioned_attributes).to eq ["name", "color"]
     end
 
     it 'sets excluded attributes if option is specified' do
-      Person.versioned_attributes.should_not include "name"
-      Person.versioned_attributes.should_not include "ethnicity"
+      expect(Person.versioned_attributes).not_to include "name"
+      expect(Person.versioned_attributes).not_to include "ethnicity"
     end
 
     it "adds the has_many association for versions" do
-      new_story.versions.to_a.should eq Array.new
+      expect(new_story.versions.to_a).to eq Array.new
     end
 
     it "has logged_user_id" do
-      new_story.should respond_to :logged_user_id
-      new_story.should respond_to :logged_user_id=
+      expect(new_story).to respond_to :logged_user_id
+      expect(new_story).to respond_to :logged_user_id=
     end
 
     it "generates a version on create" do
-      Secretary::Version.count.should eq 0
+      expect(Secretary::Version.count).to eq 0
       new_story.save!
-      Secretary::Version.count.should eq 1
-      new_story.versions.count.should eq 1
+      expect(Secretary::Version.count).to eq 1
+      expect(new_story.versions.count).to eq 1
     end
 
     it "generates a version when a record is changed" do
       other_story.update_attributes(:headline => "Some Cool Headline?!")
-      Secretary::Version.count.should eq 2
-      other_story.versions.size.should eq 2
+      expect(Secretary::Version.count).to eq 2
+      expect(other_story.versions.size).to eq 2
     end
 
     it "doesn't generate a version if no attributes were changed" do
       other_story.save!
-      other_story.versions.size.should eq 1
+      expect(other_story.versions.size).to eq 1
       other_story.save!
-      other_story.versions.size.should eq 1
+      expect(other_story.versions.size).to eq 1
     end
 
     it "destroys all versions when the object is destroyed" do
       other_story.update_attributes!(:headline => "Changed the headline")
-      other_story.versions.size.should eq 2
-      Secretary::Version.count.should eq 2
+      expect(other_story.versions.size).to eq 2
+      expect(Secretary::Version.count).to eq 2
       other_story.destroy
-      Secretary::Version.count.should eq 0
+      expect(Secretary::Version.count).to eq 0
     end
   end
 end

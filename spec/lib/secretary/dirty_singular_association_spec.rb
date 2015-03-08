@@ -7,32 +7,32 @@ describe "Dirty Singular Association" do
 
     it 'sets association_was' do
       story.image = image
-      story.image_was.should eq nil
+      expect(story.image_was).to eq nil
       story.save!
-      story.image_was.should eq image
+      expect(story.image_was).to eq image
     end
 
     it 'marks the association as changed when the association is changed' do
       story.image = image
-      story.image_changed?.should eq true
+      expect(story.image_changed?).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       story.image = image
-      story.image_changed?.should eq true
+      expect(story.image_changed?).to eq true
       story.save!
-      story.image_changed?.should eq false
+      expect(story.image_changed?).to eq false
     end
 
     it "creates a new version when setting the association" do
       story.image = image
       story.save!
 
-      story.versions.count.should eq 2
+      expect(story.versions.count).to eq 2
       version = story.versions.last
-      version.object_changes["image"][0].should eq Hash[]
+      expect(version.object_changes["image"][0]).to eq Hash[]
 
-      version.object_changes["image"][1].should eq Hash[{
+      expect(version.object_changes["image"][1]).to eq Hash[{
         "title"       => "Superman",
         "url"         => "superman.jpg",
         "story_id"    => story.id
@@ -42,19 +42,19 @@ describe "Dirty Singular Association" do
     it 'makes a version when removing' do
       story.image = image
       story.save!
-      story.versions.count.should eq 2
+      expect(story.versions.count).to eq 2
 
       story.image = nil
       story.save!
-      story.versions.count.should eq 3
+      expect(story.versions.count).to eq 3
 
       versions = story.versions.order('version_number').to_a
-      versions.last.object_changes["image"][0].should eq Hash[{
+      expect(versions.last.object_changes["image"][0]).to eq Hash[{
         "title"       => "Superman",
         "url"         => "superman.jpg",
         "story_id"    => story.id
       }]
-      versions.last.object_changes["image"][1].should eq Hash[]
+      expect(versions.last.object_changes["image"][1]).to eq Hash[]
     end
 
 
@@ -67,11 +67,11 @@ describe "Dirty Singular Association" do
 
         story.image_attributes = image_attributes
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
 
         version = story.versions.order('version_number').last
-        version.object_changes["image"][0].should eq Hash[]
-        version.object_changes["image"][1].should eq Hash[{
+        expect(version.object_changes["image"][0]).to eq Hash[]
+        expect(version.object_changes["image"][1]).to eq Hash[{
           "title"       => "Superman",
           "url"         => "super.jpg",
           "story_id"    => story.id
@@ -86,19 +86,19 @@ describe "Dirty Singular Association" do
 
         story.image = image
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
 
         story.image_attributes = image_attributes
         story.save!
-        story.versions.count.should eq 3
+        expect(story.versions.count).to eq 3
 
         version = story.versions.order('version_number').last
-        version.object_changes["image"][0].should eq Hash[{
+        expect(version.object_changes["image"][0]).to eq Hash[{
           "title"       => "Superman",
           "url"         => "superman.jpg",
           "story_id"    => story.id
         }]
-        version.object_changes["image"][1].should eq Hash[{
+        expect(version.object_changes["image"][1]).to eq Hash[{
           "title" => "Lemon",
           "url" => "superman.jpg",
           "story_id" => story.id
@@ -113,19 +113,19 @@ describe "Dirty Singular Association" do
 
         story.image = image
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
 
         story.image_attributes = image_attributes
         story.save!
-        story.versions.count.should eq 3
+        expect(story.versions.count).to eq 3
 
         version = story.versions.order('version_number').last
-        version.object_changes["image"][0].should eq Hash[{
+        expect(version.object_changes["image"][0]).to eq Hash[{
           "title"       => "Superman",
           "url"         => "superman.jpg",
           "story_id"    => story.id
         }]
-        version.object_changes["image"][1].should eq Hash[]
+        expect(version.object_changes["image"][1]).to eq Hash[]
       end
 
       it 'does not add a new version if nothing has changed' do
@@ -136,38 +136,38 @@ describe "Dirty Singular Association" do
 
         story.image = image
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
 
         story.image_attributes = image_attributes
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
       end
     end
 
     describe '#association_changed?' do
       it 'is true if the association has changed' do
-        story.image_changed?.should eq false
+        expect(story.image_changed?).to eq false
         story.image = image
-        story.image_changed?.should eq true
+        expect(story.image_changed?).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         story.image = image
-        story.image_changed?.should eq true
+        expect(story.image_changed?).to eq true
         story.save!
-        story.image_changed?.should eq false
+        expect(story.image_changed?).to eq false
       end
 
       it 'is false if the association has not changed' do
         pending "association_changed? is always considered changed when assigning"
 
         story.image = image
-        story.image_changed?.should eq true
+        expect(story.image_changed?).to eq true
         story.save!
-        story.image_changed?.should eq false
+        expect(story.image_changed?).to eq false
 
         story.image = image
-        story.image_changed?.should eq false
+        expect(story.image_changed?).to eq false
       end
     end
   end
@@ -180,32 +180,32 @@ describe "Dirty Singular Association" do
 
     it 'sets association_was' do
       image.story = story
-      image.story_was.should eq nil
+      expect(image.story_was).to eq nil
       image.save!
-      image.story_was.should eq story
+      expect(image.story_was).to eq story
     end
 
     it 'marks the association as changed when the association is changed' do
       image.story = story
-      image.story_changed?.should eq true
+      expect(image.story_changed?).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       image.story = story
-      image.story_changed?.should eq true
+      expect(image.story_changed?).to eq true
       image.save!
-      image.story_changed?.should eq false
+      expect(image.story_changed?).to eq false
     end
 
     it "creates a new version when setting the association" do
       image.story = story
       image.save!
 
-      image.versions.count.should eq 2
+      expect(image.versions.count).to eq 2
       version = image.versions.order('version_number').last
-      version.object_changes["story"][0].should eq Hash[]
+      expect(version.object_changes["story"][0]).to eq Hash[]
 
-      version.object_changes["story"][1].should eq Hash[{
+      expect(version.object_changes["story"][1]).to eq Hash[{
         "headline" => "Headline",
         "body" => "Body"
       }]
@@ -214,65 +214,65 @@ describe "Dirty Singular Association" do
     it "tracks the foreign key as the normally" do
       image.story_id = story.id
       image.save!
-      image.versions.count.should eq 2
+      expect(image.versions.count).to eq 2
 
       version = image.versions.order('version_number').last
-      version.object_changes["story_id"][0].should eq nil
-      version.object_changes["story_id"][1].should eq story.id
-      version.description.should eq "Changed Story"
+      expect(version.object_changes["story_id"][0]).to eq nil
+      expect(version.object_changes["story_id"][1]).to eq story.id
+      expect(version.description).to eq "Changed Story"
     end
 
     it 'makes a version when removing' do
       image.story = story
       image.save!
-      image.versions.count.should eq 2
+      expect(image.versions.count).to eq 2
 
       image.story = nil
       image.save!
-      image.versions.count.should eq 3
+      expect(image.versions.count).to eq 3
 
       versions = image.versions.order('version_number').to_a
-      versions.last.object_changes["story"][0].should eq Hash[{
+      expect(versions.last.object_changes["story"][0]).to eq Hash[{
         "headline" => "Headline",
         "body" => "Body"
       }]
-      versions.last.object_changes["story"][1].should eq Hash[]
+      expect(versions.last.object_changes["story"][1]).to eq Hash[]
     end
 
     describe '#association_changed?' do
       it 'is true if the association has changed' do
-        image.story_changed?.should eq false
+        expect(image.story_changed?).to eq false
         image.story = story
-        image.story_changed?.should eq true
+        expect(image.story_changed?).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         image.story = story
-        image.story_changed?.should eq true
+        expect(image.story_changed?).to eq true
         image.save!
-        image.story_changed?.should eq false
+        expect(image.story_changed?).to eq false
       end
 
       it 'is false if the association has not changed' do
         pending "association_changed? is always considered changed when assigning"
 
         image.story = story
-        image.story_changed?.should eq true
+        expect(image.story_changed?).to eq true
         image.save!
-        image.story_changed?.should eq false
+        expect(image.story_changed?).to eq false
 
         image.story = story
-        image.story_changed?.should eq false
+        expect(image.story_changed?).to eq false
       end
 
       it 'is true when switching to or from nil' do
         # image.story is nil
         image.story = story
-        image.story_changed?.should eq true
+        expect(image.story_changed?).to eq true
         image.save!
 
         image.story = nil
-        image.story_changed?.should eq true
+        expect(image.story_changed?).to eq true
       end
     end
   end

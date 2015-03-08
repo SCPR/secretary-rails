@@ -3,20 +3,20 @@ require 'spec_helper'
 describe Secretary::TracksAssociation do
   describe '::tracks_association' do
     it "raises an error if the model isn't versioned" do
-      lambda {
+      expect {
         User.tracks_association
-      }.should raise_error Secretary::NotVersionedError
+      }.to raise_error Secretary::NotVersionedError
     end
 
     it "raises an error if there is no association with the given name" do
-      lambda {
+      expect {
         Person.tracks_association :giraffes
-      }.should raise_error Secretary::NoAssociationError
+      }.to raise_error Secretary::NoAssociationError
     end
 
     it 'adds the associations to the versioned attributes' do
-      Person.versioned_attributes.should include "animals"
-      Person.versioned_attributes.should include "hobbies"
+      expect(Person.versioned_attributes).to include "animals"
+      expect(Person.versioned_attributes).to include "hobbies"
     end
   end
 end

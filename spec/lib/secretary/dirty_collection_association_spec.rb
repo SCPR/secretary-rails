@@ -7,30 +7,30 @@ describe "Dirty Collection Association" do
 
     it 'sets associations_were' do
       person.animals << animal
-      person.animals_were.should eq []
+      expect(person.animals_were).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       person.animals << animal
-      person.animals_changed?.should eq true
+      expect(person.animals_changed?).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       person.animals << animal
-      person.animals_changed?.should eq true
+      expect(person.animals_changed?).to eq true
       person.save!
-      person.animals_changed?.should eq false
+      expect(person.animals_changed?).to eq false
     end
 
     it "creates a new version when adding" do
       person.animals = [animal]
       person.save!
 
-      person.versions.count.should eq 2
+      expect(person.versions.count).to eq 2
       version = person.versions.last
-      version.object_changes["animals"][0].should eq []
+      expect(version.object_changes["animals"][0]).to eq []
 
-      version.object_changes["animals"][1].should eq [
+      expect(version.object_changes["animals"][1]).to eq [
         {"name" => "Bob", "color" => "dog"}
       ]
     end
@@ -41,11 +41,11 @@ describe "Dirty Collection Association" do
 
       person.animals << animal
       person.save!
-      person.versions.count.should eq 2
+      expect(person.versions.count).to eq 2
 
       versions = person.versions.order('version_number').to_a
-      versions.last.object_changes["animals"][0].should eq []
-      versions.last.object_changes["animals"][1].should eq [{
+      expect(versions.last.object_changes["animals"][0]).to eq []
+      expect(versions.last.object_changes["animals"][1]).to eq [{
         "name" => "Bryan",
         "color" => "lame"
       }]
@@ -56,18 +56,18 @@ describe "Dirty Collection Association" do
       animal  = build :animal, :name => "Bryan", :color => 'lame'
       person.animals = [animal]
       person.save!
-      person.versions.count.should eq 1
+      expect(person.versions.count).to eq 1
 
       person.animals = []
       person.save!
-      person.versions.count.should eq 2
+      expect(person.versions.count).to eq 2
 
       versions = person.versions.order('version_number').to_a
-      versions.last.object_changes["animals"][0].should eq [{
+      expect(versions.last.object_changes["animals"][0]).to eq [{
         "name" => "Bryan",
         "color" => "lame"
       }]
-      versions.last.object_changes["animals"][1].should eq []
+      expect(versions.last.object_changes["animals"][1]).to eq []
     end
 
 
@@ -81,13 +81,13 @@ describe "Dirty Collection Association" do
         ]
 
         person.animals_attributes = animals_attributes
-        person.animals_were.should eq []
+        expect(person.animals_were).to eq []
         person.save!
-        person.versions.count.should eq 2
+        expect(person.versions.count).to eq 2
 
         version = person.versions.order('version_number').last
-        version.object_changes["animals"][0].should eq []
-        version.object_changes["animals"][1].should eq [{
+        expect(version.object_changes["animals"][0]).to eq []
+        expect(version.object_changes["animals"][1]).to eq [{
           "name" => "George",
           "color" => "yes"
         }]
@@ -103,17 +103,17 @@ describe "Dirty Collection Association" do
 
         person.animals << animal
         person.save!
-        person.versions.count.should eq 2
+        expect(person.versions.count).to eq 2
         person.animals_attributes = animals_attributes
         person.save!
-        person.versions.count.should eq 3
+        expect(person.versions.count).to eq 3
 
         version = person.versions.order('version_number').last
-        version.object_changes["animals"][0].should eq [{
+        expect(version.object_changes["animals"][0]).to eq [{
           "name" => "Bob",
           "color" => "dog"
         }]
-        version.object_changes["animals"][1].should eq [{
+        expect(version.object_changes["animals"][1]).to eq [{
           "name" => "Lemon",
           "color" => "dog"
         }]
@@ -129,17 +129,17 @@ describe "Dirty Collection Association" do
 
         person.animals << animal
         person.save!
-        person.versions.count.should eq 2
+        expect(person.versions.count).to eq 2
         person.animals_attributes = animals_attributes
         person.save!
-        person.versions.count.should eq 3
+        expect(person.versions.count).to eq 3
 
         version = person.versions.order('version_number').last
-        version.object_changes["animals"][0].should eq [{
+        expect(version.object_changes["animals"][0]).to eq [{
           "name" => "Bob",
           "color" => "dog"
         }]
-        version.object_changes["animals"][1].should eq []
+        expect(version.object_changes["animals"][1]).to eq []
       end
 
       it 'does not add a new version if nothing has changed' do
@@ -152,36 +152,36 @@ describe "Dirty Collection Association" do
 
         person.animals << animal
         person.save!
-        person.versions.count.should eq 2
+        expect(person.versions.count).to eq 2
          # this doesn't call before_add/remove callbacks
         person.animals_attributes = animals_attributes
         person.save!
-        person.versions.count.should eq 2
+        expect(person.versions.count).to eq 2
       end
     end
 
     describe '#association_changed?' do
       it 'is true if the association has changed' do
-        person.animals_changed?.should eq false
+        expect(person.animals_changed?).to eq false
         person.animals << animal
-        person.animals_changed?.should eq true
+        expect(person.animals_changed?).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         person.animals << animal
-        person.animals_changed?.should eq true
+        expect(person.animals_changed?).to eq true
         person.save!
-        person.animals_changed?.should eq false
+        expect(person.animals_changed?).to eq false
       end
 
       it 'is false if the association has not changed' do
         person.animals << animal
-        person.animals_changed?.should eq true
+        expect(person.animals_changed?).to eq true
         person.save!
-        person.animals_changed?.should eq false
+        expect(person.animals_changed?).to eq false
 
         person.animals = [animal]
-        person.animals_changed?.should eq false
+        expect(person.animals_changed?).to eq false
       end
     end
   end
@@ -195,30 +195,30 @@ describe "Dirty Collection Association" do
 
     it 'sets associations_were' do
       car.locations << location
-      car.locations_were.should eq []
+      expect(car.locations_were).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       car.locations << location
-      car.locations_changed?.should eq true
+      expect(car.locations_changed?).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       car.locations << location
-      car.locations_changed?.should eq true
+      expect(car.locations_changed?).to eq true
       car.save!
-      car.locations_changed?.should eq false
+      expect(car.locations_changed?).to eq false
     end
 
     it "creates a new version when adding" do
       car.locations = [location]
       car.save!
 
-      car.versions.count.should eq 2
+      expect(car.versions.count).to eq 2
       version = car.versions.last
-      version.object_changes["locations"][0].should eq []
+      expect(version.object_changes["locations"][0]).to eq []
 
-      version.object_changes["locations"][1].should eq [
+      expect(version.object_changes["locations"][1]).to eq [
         {"title" => "Home", "address" => "123 Fake St."}
       ]
     end
@@ -226,11 +226,11 @@ describe "Dirty Collection Association" do
     it 'makes a version when adding' do
       car.locations << location
       car.save!
-      car.versions.count.should eq 2
+      expect(car.versions.count).to eq 2
 
       versions = car.versions.order('version_number').to_a
-      versions.last.object_changes["locations"][0].should eq []
-      versions.last.object_changes["locations"][1].should eq [{
+      expect(versions.last.object_changes["locations"][0]).to eq []
+      expect(versions.last.object_changes["locations"][1]).to eq [{
         "title" => "Home",
         "address" => "123 Fake St."
       }]
@@ -239,18 +239,18 @@ describe "Dirty Collection Association" do
     it 'makes a version when removing' do
       car.locations = [location]
       car.save!
-      car.versions.count.should eq 2
+      expect(car.versions.count).to eq 2
 
       car.locations = []
       car.save!
-      car.versions.count.should eq 3
+      expect(car.versions.count).to eq 3
 
       versions = car.versions.order('version_number').to_a
-      versions.last.object_changes["locations"][0].should eq [{
+      expect(versions.last.object_changes["locations"][0]).to eq [{
         "title" => "Home",
         "address" => "123 Fake St."
       }]
-      versions.last.object_changes["locations"][1].should eq []
+      expect(versions.last.object_changes["locations"][1]).to eq []
     end
 
 
@@ -264,13 +264,13 @@ describe "Dirty Collection Association" do
         ]
 
         car.locations_attributes = locations_attributes
-        car.locations_were.should eq []
+        expect(car.locations_were).to eq []
         car.save!
-        car.versions.count.should eq 2
+        expect(car.versions.count).to eq 2
 
         version = car.versions.order('version_number').last
-        version.object_changes["locations"][0].should eq []
-        version.object_changes["locations"][1].should eq [{
+        expect(version.object_changes["locations"][0]).to eq []
+        expect(version.object_changes["locations"][1]).to eq [{
           "title" => "Work",
           "address" => "456 Real St."
         }]
@@ -286,17 +286,17 @@ describe "Dirty Collection Association" do
 
         car.locations << location
         car.save!
-        car.versions.count.should eq 2
+        expect(car.versions.count).to eq 2
         car.locations_attributes = locations_attributes
         car.save!
-        car.versions.count.should eq 3
+        expect(car.versions.count).to eq 3
 
         version = car.versions.order('version_number').last
-        version.object_changes["locations"][0].should eq [{
+        expect(version.object_changes["locations"][0]).to eq [{
           "title" => "Home",
           "address" => "123 Fake St."
         }]
-        version.object_changes["locations"][1].should eq [{
+        expect(version.object_changes["locations"][1]).to eq [{
           "title" => "Work",
           "address" => "123 Fake St."
         }]
@@ -312,17 +312,17 @@ describe "Dirty Collection Association" do
 
         car.locations << location
         car.save!
-        car.versions.count.should eq 2
+        expect(car.versions.count).to eq 2
         car.locations_attributes = locations_attributes
         car.save!
-        car.versions.count.should eq 3
+        expect(car.versions.count).to eq 3
 
         version = car.versions.order('version_number').last
-        version.object_changes["locations"][0].should eq [{
+        expect(version.object_changes["locations"][0]).to eq [{
           "title" => "Home",
           "address" => "123 Fake St."
         }]
-        version.object_changes["locations"][1].should eq []
+        expect(version.object_changes["locations"][1]).to eq []
       end
 
       it 'does not add a new version if nothing has changed' do
@@ -335,36 +335,36 @@ describe "Dirty Collection Association" do
 
         car.locations << location
         car.save!
-        car.versions.count.should eq 2
+        expect(car.versions.count).to eq 2
          # this doesn't call before_add/remove callbacks
         car.locations_attributes = locations_attributes
         car.save!
-        car.versions.count.should eq 2
+        expect(car.versions.count).to eq 2
       end
     end
 
     describe '#association_changed?' do
       it 'is true if the association has changed' do
-        car.locations_changed?.should eq false
+        expect(car.locations_changed?).to eq false
         car.locations << location
-        car.locations_changed?.should eq true
+        expect(car.locations_changed?).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         car.locations << location
-        car.locations_changed?.should eq true
+        expect(car.locations_changed?).to eq true
         car.save!
-        car.locations_changed?.should eq false
+        expect(car.locations_changed?).to eq false
       end
 
       it 'is false if the association has not changed' do
         car.locations << location
-        car.locations_changed?.should eq true
+        expect(car.locations_changed?).to eq true
         car.save!
-        car.locations_changed?.should eq false
+        expect(car.locations_changed?).to eq false
 
         car.locations = [location]
-        car.locations_changed?.should eq false
+        expect(car.locations_changed?).to eq false
       end
     end
   end
@@ -376,30 +376,30 @@ describe "Dirty Collection Association" do
 
     it 'sets associations_were' do
       story.users << user
-      story.users_were.should eq []
+      expect(story.users_were).to eq []
     end
 
     it 'marks the association as changed when the association is changed' do
       story.users << user
-      story.users_changed?.should eq true
+      expect(story.users_changed?).to eq true
     end
 
     it 'clears out the dirty association after commit' do
       story.users << user
-      story.users_changed?.should eq true
+      expect(story.users_changed?).to eq true
       story.save!
-      story.users_changed?.should eq false
+      expect(story.users_changed?).to eq false
     end
 
     it "creates a new version when adding" do
       story.users = [user]
       story.save!
 
-      story.versions.count.should eq 2
+      expect(story.versions.count).to eq 2
       version = story.versions.last
-      version.object_changes["users"][0].should eq []
+      expect(version.object_changes["users"][0]).to eq []
 
-      version.object_changes["users"][1].should eq [
+      expect(version.object_changes["users"][1]).to eq [
         {"name" => "Bryan"}
       ]
     end
@@ -407,11 +407,11 @@ describe "Dirty Collection Association" do
     it 'makes a version when adding' do
       story.users << user
       story.save!
-      story.versions.count.should eq 2
+      expect(story.versions.count).to eq 2
 
       versions = story.versions.order('version_number').to_a
-      versions.last.object_changes["users"][0].should eq []
-      versions.last.object_changes["users"][1].should eq [{
+      expect(versions.last.object_changes["users"][0]).to eq []
+      expect(versions.last.object_changes["users"][1]).to eq [{
         "name" => "Bryan"
       }]
     end
@@ -419,17 +419,17 @@ describe "Dirty Collection Association" do
     it 'makes a version when removing' do
       story.users = [user]
       story.save!
-      story.versions.count.should eq 2
+      expect(story.versions.count).to eq 2
 
       story.users = []
       story.save!
-      story.versions.count.should eq 3
+      expect(story.versions.count).to eq 3
 
       versions = story.versions.order('version_number').to_a
-      versions.last.object_changes["users"][0].should eq [{
+      expect(versions.last.object_changes["users"][0]).to eq [{
         "name" => "Bryan"
       }]
-      versions.last.object_changes["users"][1].should eq []
+      expect(versions.last.object_changes["users"][1]).to eq []
     end
 
 
@@ -442,13 +442,13 @@ describe "Dirty Collection Association" do
         ]
 
         story.users_attributes = users_attributes
-        story.users_were.should eq []
+        expect(story.users_were).to eq []
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
 
         version = story.versions.order('version_number').last
-        version.object_changes["users"][0].should eq []
-        version.object_changes["users"][1].should eq [{
+        expect(version.object_changes["users"][0]).to eq []
+        expect(version.object_changes["users"][1]).to eq [{
           "name" => "Stephen"
         }]
       end
@@ -463,16 +463,16 @@ describe "Dirty Collection Association" do
 
         story.users << user
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
         story.users_attributes = users_attributes
         story.save!
-        story.versions.count.should eq 3
+        expect(story.versions.count).to eq 3
 
         version = story.versions.order('version_number').last
-        version.object_changes["users"][0].should eq [{
+        expect(version.object_changes["users"][0]).to eq [{
           "name" => "Bryan"
         }]
-        version.object_changes["users"][1].should eq [{
+        expect(version.object_changes["users"][1]).to eq [{
           "name" => "Stephen"
         }]
       end
@@ -487,16 +487,16 @@ describe "Dirty Collection Association" do
 
         story.users << user
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
         story.users_attributes = users_attributes
         story.save!
-        story.versions.count.should eq 3
+        expect(story.versions.count).to eq 3
 
         version = story.versions.order('version_number').last
-        version.object_changes["users"][0].should eq [{
+        expect(version.object_changes["users"][0]).to eq [{
           "name" => "Bryan"
         }]
-        version.object_changes["users"][1].should eq []
+        expect(version.object_changes["users"][1]).to eq []
       end
 
       it 'does not add a new version if nothing has changed' do
@@ -509,36 +509,36 @@ describe "Dirty Collection Association" do
 
         story.users << user
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
          # this doesn't call before_add/remove callbacks
         story.users_attributes = users_attributes
         story.save!
-        story.versions.count.should eq 2
+        expect(story.versions.count).to eq 2
       end
     end
 
     describe '#association_changed?' do
       it 'is true if the association has changed' do
-        story.users_changed?.should eq false
+        expect(story.users_changed?).to eq false
         story.users << user
-        story.users_changed?.should eq true
+        expect(story.users_changed?).to eq true
       end
 
       it 'is false after the parent object has been saved' do
         story.users << user
-        story.users_changed?.should eq true
+        expect(story.users_changed?).to eq true
         story.save!
-        story.users_changed?.should eq false
+        expect(story.users_changed?).to eq false
       end
 
       it 'is false if the association has not changed' do
         story.users << user
-        story.users_changed?.should eq true
+        expect(story.users_changed?).to eq true
         story.save!
-        story.users_changed?.should eq false
+        expect(story.users_changed?).to eq false
 
         story.users = [user]
-        story.users_changed?.should eq false
+        expect(story.users_changed?).to eq false
       end
     end
   end

@@ -6,8 +6,8 @@ describe Secretary::Version do
       story   = create :story
       version = Secretary::Version.generate(story)
 
-      Secretary::Version.count.should eq 2
-      story.versions.last.should eq version
+      expect(Secretary::Version.count).to eq 2
+      expect(story.versions.last).to eq version
     end
 
     it "sets the user association" do
@@ -15,7 +15,7 @@ describe Secretary::Version do
       story   = create :story, logged_user_id: user.id
       version = Secretary::Version.generate(story)
 
-      story.versions.last.user.should eq user
+      expect(story.versions.last.user).to eq user
     end
   end
 
@@ -27,7 +27,7 @@ describe Secretary::Version do
 
     it "generates a description with object name on create" do
       story.save!
-      story.versions.last.description.should eq "Created Story ##{story.id}"
+      expect(story.versions.last.description).to eq "Created Story ##{story.id}"
     end
 
     it "generates a description with the changed attributes on update" do
@@ -39,7 +39,7 @@ describe Secretary::Version do
         :url        => "http://kitty.com/kitty.jpg"
       })
 
-      image.versions.last.description.should eq("Changed Story and Url")
+      expect(image.versions.last.description).to eq("Changed Story and Url")
     end
   end
 
@@ -47,16 +47,16 @@ describe Secretary::Version do
   describe "incrementing version number" do
     it "sets version_number to 1 if no other versions exist for this object" do
       story = create :story
-      story.versions.last.version_number.should eq 1
+      expect(story.versions.last.version_number).to eq 1
     end
 
     it "increments version number if versions already exist" do
       story = create :story, :headline => "Some Headline"
-      story.versions.last.version_number.should eq 1
+      expect(story.versions.last.version_number).to eq 1
       story.update_attributes(:headline => "Cooler story, bro.")
-      story.versions.last.version_number.should eq 2
+      expect(story.versions.last.version_number).to eq 2
       story.update_attributes(:headline => "Coolest story, bro!")
-      story.versions.last.version_number.should eq 3
+      expect(story.versions.last.version_number).to eq 3
     end
   end
 
@@ -67,8 +67,8 @@ describe Secretary::Version do
       story.update_attributes!(:headline => "Updated Headline")
 
       version = story.versions.last
-      version.attribute_diffs.keys.should eq ["headline"]
-      version.attribute_diffs["headline"].should be_a Diffy::Diff
+      expect(version.attribute_diffs.keys).to eq ["headline"]
+      expect(version.attribute_diffs["headline"]).to be_a Diffy::Diff
     end
   end
 
@@ -76,7 +76,7 @@ describe Secretary::Version do
   describe '#title' do
     it "is the simple title for the version" do
       story = create :story
-      story.versions.last.title.should eq "Story ##{story.id} v1"
+      expect(story.versions.last.title).to eq "Story ##{story.id} v1"
     end
   end
 end
