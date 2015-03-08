@@ -3,14 +3,12 @@
 source "https://rubygems.org"
 
 gem "appraisal", "~> 1.0.3"
-gem "activerecord", :github => "rails/rails"
-gem "railties", :github => "rails/rails"
-gem "actionview", :github => "rails/rails"
-gem "arel", :github => "rails/arel"
+gem "activerecord", :path => "../../../clones/rails"
+gem "railties", :path => "../../../clones/rails"
 
 group :test do
   gem "pry"
-  gem "combustion", :github => "bricker/combustion", :branch => "rm-silence-stream"
+  gem "combustion", :github => "bricker/combustion", :branch => "fix-recreate"
   gem "sqlite3"
   gem "mysql2"
   gem "pg"

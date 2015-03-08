@@ -3,10 +3,8 @@
 source "https://rubygems.org"
 
 gem "appraisal", "~> 1.0.3"
-gem "activerecord", :github => "rails/rails"
-gem "railties", :github => "rails/rails"
-gem "actionview", :github => "rails/rails"
-gem "arel", :github => "rails/arel"
+gem "activerecord", "~> 4.2.1.rc1"
+gem "railties", "~> 4.2.1.rc1"
 
 group :test do
   gem "pry"

@@ -4,14 +4,14 @@ ActiveRecord::Schema.define do
     t.string "species"
     t.string "color"
     t.integer "person_id"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "cars", :force => true do |t|
     t.string "name"
     t.string "color"
     t.integer "year"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "cars_locations", :force => true do |t|
@@ -22,20 +22,20 @@ ActiveRecord::Schema.define do
   create_table "hobbies", :force => true do |t|
     t.string "title"
     t.integer "person_id"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "images", :force => true do |t|
     t.string "title"
     t.string "url"
     t.integer "story_id"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "locations", :force => true do |t|
     t.string "title"
     t.text "address"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "people", :force => true do |t|
@@ -43,24 +43,24 @@ ActiveRecord::Schema.define do
     t.string "ethnicity"
     t.integer "age"
     t.integer "location_id"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "stories", :force => true do |t|
     t.string  "headline"
     t.text    "body"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "story_users", :force => true do |t|
     t.integer "story_id"
     t.integer "user_id"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "users", :force => true do |t|
     t.string "name"
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table "versions", :force => true do |t|

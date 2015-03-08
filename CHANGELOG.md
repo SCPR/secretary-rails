@@ -1,6 +1,14 @@
-## 1.1.2 (TBD)
+
+## 2.0
 #### Changes
-* Better dependency declarations
+* [BREAKING] Drop ruby 1.9.3 support.
+* [BREAKING] Drop rails 3.2 support.
+* Better dependency declarations.
+
+#### Additions
+* Add Ruby 2.2 support.
+* Add Rails 4.2 support.
+* Add Rails 5 (edge) support.
 
 
 ## 1.1.1 (2014-05-07)

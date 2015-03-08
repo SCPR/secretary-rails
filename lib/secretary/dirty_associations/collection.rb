@@ -35,9 +35,9 @@ module Secretary
           name = name.to_s
 
           if previous
-            self.changed_attributes[name] = previous
+            __compat_set_attribute_was(name, previous)
           else
-            self.changed_attributes.delete(name)
+            __compat_clear_attribute_changes(name)
           end
         end
       end

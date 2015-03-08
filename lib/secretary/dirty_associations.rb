@@ -11,6 +11,21 @@ module Secretary
 
 
     module ClassMethods
+      # Backport of rails/rails#5383f22bb83adbd0e2e3f182f68196f1fb1433fa
+      # For 4.2.0 support.
+      if ActiveRecord::VERSION::STRING < "4.2.1"
+        def persistable_attribute_names
+          @persistable_attribute_names ||= connection
+            .schema_cache.columns_hash(table_name).keys
+        end
+
+        def reset_column_information
+          super
+          @persistable_attribute_names = nil
+        end
+      end
+
+
       private
 
       def define_dirty_association_methods(name, reflection)
@@ -18,7 +33,7 @@ module Secretary
 
         module_eval <<-EOE, __FILE__, __LINE__ + 1
           def #{name}_changed?
-            attribute_changed?("#{name}")
+            !!attribute_changed?("#{name}")
           end
 
           def #{name}#{suffix}
@@ -33,7 +48,7 @@ module Secretary
           private
 
           def #{name}_will_change!
-            return if attribute_changed?("#{name}")
+            return if #{name}_changed?
 
             # If this is a persisted object, fetch the object from the
             # database and get its associated objects. Otherwise, just
@@ -48,11 +63,17 @@ module Secretary
               previous = previous.to_a
             end
 
-            changed_attributes["#{name}"] = previous
+            __compat_set_attribute_was("#{name}", previous)
           end
 
+          # Rails < 4.2
           def reset_#{name}!
             reset_attribute!("#{name}")
+          end
+
+          # Rails 4.2+
+          def restore_#{name}!
+            restore_attribute!("#{name}")
           end
         EOE
       end
@@ -95,6 +116,37 @@ module Secretary
         reset_changes_if_unchanged(record, name, previous)
       else
         super(record, *args)
+      end
+    end
+
+    # Rails 4.2 adds "set_attribute_was" which must be used, so we'll
+    # check for it.
+    def __compat_set_attribute_was(name, previous)
+      if respond_to?(:set_attribute_was, true)
+        # Rails 4.2+
+        set_attribute_was(name, previous)
+      else
+        # Rails < 4.2
+        changed_attributes[name] = previous
+      end
+    end
+
+    def __compat_clear_attribute_changes(name)
+      if respond_to?(:clear_attribute_changes, true)
+        # Rails 4.2+
+        clear_attribute_changes([name])
+      else
+        # Rails < 4.2
+        self.changed_attributes.delete(name)
+      end
+    end
+
+
+    # Backport of rails/rails#5383f22bb83adbd0e2e3f182f68196f1fb1433fa
+    # For 4.2.0 support.
+    if ActiveRecord::VERSION::STRING < "4.2.1"
+      def keys_for_partial_write
+        super & self.class.persistable_attribute_names
       end
     end
   end
