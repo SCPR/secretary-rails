@@ -1,3 +1,8 @@
+## 2.0.1
+#### Fixes
+* Fixed callback registration to not register duplicate destroy/autosave callbacks. Fixes #14.
+
+
 ## 2.0
 #### Changes
 * [BREAKING] Drop ruby 1.9.3 support.

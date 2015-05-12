@@ -1,3 +1,3 @@
 module Secretary
-  GEM_VERSION = "2.0.0"
+  GEM_VERSION = "2.0.1"
 end
