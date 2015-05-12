@@ -9,7 +9,8 @@ gem "actionview", :github => "rails/rails"
 gem "arel", :github => "rails/arel"
 
 group :test do
-  gem "pry"
+  gem "pry-byebug"
+  gem "minitest"
   gem "combustion", :github => "bricker/combustion", :branch => "rm-silence-stream"
   gem "sqlite3"
   gem "mysql2"

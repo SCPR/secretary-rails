@@ -4,7 +4,8 @@ gemspec
 gem "appraisal", "~> 1.0.3"
 
 group :test do
-  gem 'pry'
+  gem 'pry-byebug'
+  gem 'minitest'
 
   # For Rails 5 compatibility
   gem "combustion", github: "bricker/combustion", branch: "rm-silence-stream"

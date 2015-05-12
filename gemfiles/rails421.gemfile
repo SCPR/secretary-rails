@@ -3,11 +3,12 @@
 source "https://rubygems.org"
 
 gem "appraisal", "~> 1.0.3"
-gem "activerecord", "~> 4.2.1.rc1"
-gem "railties", "~> 4.2.1.rc1"
+gem "activerecord", "~> 4.2.1"
+gem "railties", "~> 4.2.1"
 
 group :test do
-  gem "pry"
+  gem "pry-byebug"
+  gem "minitest"
   gem "combustion", :github => "bricker/combustion", :branch => "rm-silence-stream"
   gem "sqlite3"
   gem "mysql2"

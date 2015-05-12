@@ -1,4 +1,4 @@
-rails_gems = %w{ activerecord railties }
+rails_gems = %w[ activerecord railties ]
 
 appraise "rails40" do
   rails_gems.each { |g| gem g, "~> 4.0.0" }
@@ -15,7 +15,7 @@ appraise "rails420" do
 end
 
 appraise "rails421" do
-  rails_gems.each { |g| gem g, "~> 4.2.1.rc1" }
+  rails_gems.each { |g| gem g, "~> 4.2.1" }
 end
 
 appraise "railsedge" do

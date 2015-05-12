@@ -7,7 +7,8 @@ gem "activerecord", "~> 4.0.0"
 gem "railties", "~> 4.0.0"
 
 group :test do
-  gem "pry"
+  gem "pry-byebug"
+  gem "minitest"
   gem "combustion", :github => "bricker/combustion", :branch => "rm-silence-stream"
   gem "sqlite3"
   gem "mysql2"
