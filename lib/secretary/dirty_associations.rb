@@ -85,9 +85,10 @@ module Secretary
       end
 
       # Necessary for Rails < 4.1
-      def redefine_callback(callback_name, name, reflection)
-        send("#{callback_name}_for_#{name}=",
-          Array(reflection.options[callback_name])
+      # We need to force the callbacks into an array.
+      def redefine_callback(cb_name, name, reflection)
+        send("#{cb_name}_for_#{name}=",
+          Array(reflection.options[cb_name])
         )
       end
     end
