@@ -374,6 +374,22 @@ describe "Dirty Collection Association" do
     let(:story) { create :story }
     let(:user) { create :user, :name => "Bryan" }
 
+    it "can track the join model" do
+      # Github #14
+      story = build :story
+      user = build :user
+
+      user.save!
+
+      story.users << user
+      story.save!
+
+      version = story.versions.last
+      expect(version.object_changes["story_users"][0]).to eq []
+      expect(version.object_changes["story_users"][1][0]["story_id"]).to eq story.id
+      expect(version.object_changes["story_users"][1][0]["user_id"]).to eq user.id
+    end
+
     it 'sets associations_were' do
       story.users << user
       expect(story.users_were).to eq []

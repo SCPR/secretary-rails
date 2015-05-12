@@ -53,8 +53,8 @@ ActiveRecord::Schema.define do
   end
 
   create_table "story_users", :force => true do |t|
-    t.integer "story_id"
-    t.integer "user_id"
+    t.integer "story_id", null: false
+    t.integer "user_id", null: false
     t.timestamps null: false
   end
 

@@ -4,21 +4,25 @@ module Secretary
       extend ActiveSupport::Concern
 
       module ClassMethods
+        CALLBACKS = [:before_add, :before_remove]
+
         private
 
         def add_collection_callbacks(name, reflection)
-          add_callback_methods(:before_add, reflection,
-            [:prepare_to_change_association])
-
-          add_callback_methods(:before_remove, reflection,
-            [:prepare_to_change_association])
+          CALLBACKS.each do |cb|
+            add_callback_methods(cb, reflection,
+              [:prepare_to_change_association])
+          end
 
           if ActiveRecord::VERSION::STRING >= "4.1.0"
-            ActiveRecord::Associations::Builder::HasMany
-            .define_callbacks(self, reflection)
+            CALLBACKS.each do |cb|
+              ActiveRecord::Associations::Builder::HasMany
+                .define_callback(self, cb, reflection.name, reflection.options)
+            end
           else
-            redefine_callback(:before_add, name, reflection)
-            redefine_callback(:before_remove, name, reflection)
+            CALLBACKS.each do |cb|
+              redefine_callback(cb, name, reflection)
+            end
           end
         end
       end
