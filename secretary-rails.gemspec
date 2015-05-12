@@ -21,5 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord", [">= 4.0.0", "< 6"]
   s.add_dependency "diffy", [">= 3.0", "< 4"]
 
-  s.add_development_dependency 'bundler', ['>= 1.7.0', '< 1.9']
+  s.add_development_dependency 'bundler', ['>= 1.7.0', '< 2']
 end
