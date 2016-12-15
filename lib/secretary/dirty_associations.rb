@@ -133,7 +133,11 @@ module Secretary
     end
 
     def __compat_clear_attribute_changes(name)
-      if respond_to?(:clear_attribute_changes, true)
+      if respond_to?(:clear_attribute_change, true)
+        # Rails 5.0+
+        # call directly
+        attributes_changed_by_setter.except!(name)
+      elsif respond_to?(:clear_attribute_changes, true)
         # Rails 4.2+
         clear_attribute_changes([name])
       else
